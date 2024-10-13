@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: "Urbanist", sans-serif;
+  }
+}
+
+
+/* animate heroHome building */
+@keyframes slideIn {
+  0% {
+      transform: translateX(100%);
+      opacity: 0;
+  }
+  100% {
+      transform: translateX(0);
+      opacity: 1;
+  }
+}
+
+.animate-slide-in {
+  animation: slideIn 1s ease-out forwards; /* Adjust duration as needed */
+}
+
+.hero-heading {
+  @apply font-[600] text-[60px] leading-[72px] bg-clip-text text-transparent bg-gradient-to-r from-[#703BF7] to-primaryText;
+}
+
+.custom-heading {
+  @apply font-[600] text-[48px] leading-[72px] bg-clip-text text-transparent bg-gradient-to-r from-[#703BF7] to-primaryText;
+}
+
+body {
+  @apply bg-backgroundDark; /* Tailwind custom styling using @apply */
+}
+
+.custom-para {
+  @apply text-[17px] leading-[27px] font-[500] text-secondryText ;
+}
+
+.cards-heading {
+  @apply text-[24px] leading-[36px] font-[600] text-primaryText;
+}
+
+.white-para {
+  @apply text-[17px] leading-[27px] font-[500] text-primaryText ;
+}
+
+.secondary-heading{
+  @apply font-[500] pr-6 text-[18px] leading-[30px] text-primaryText 
+}
+
+.inputStyle{
+  @apply mt-1 block w-full rounded-md bg-secondryBackground bg-opacity-60 border border-borderCol p-2  shadow-sm appearance-none outline-none sm:text-sm;
+}
+
+.cardsStyling{
+  @apply bg-gradient-to-br from-primaryBackground to-backgroundDark p-6 border border-borderCol rounded-xl shadow-lg text-white w-full;
+}
+
+.gradientBackground{
+ @apply bg-gradient-to-br from-primaryBackground to-backgroundDark;
+}
