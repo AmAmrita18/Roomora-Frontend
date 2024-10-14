@@ -3,6 +3,7 @@ import stars from "../../assets/images/common/stars.png";
 import BtnBlack from "../../components/Buttons/BtnBlack.jsx";
 import { RxDashboard } from "react-icons/rx";
 import { MdOutlineMenuBook } from "react-icons/md";
+import BtnPurple from "../../components/Buttons/BtnPurple.jsx";
 
 const ValuedClients = () => {
   const clientsInfo = [
@@ -26,7 +27,7 @@ const ValuedClients = () => {
 
   return (
     <div className="w-full">
-      <div className="w-[90%] max-w-[1200px] mx-auto border-b border-borderCol pt-36">
+      <div className="w-[90%] max-w-[1200px] mx-auto pb-12 border-b border-borderCol pt-36">
         <div>
           <img src={stars} alt="" />
           <h1 className="custom-heading">Our Valued Clients</h1>
@@ -47,11 +48,11 @@ const ValuedClients = () => {
                     {item.title}
                   </h1>
                 </div>
-                <BtnBlack
+                <BtnPurple
                   onClick={() => alert(`${item.heading} button clicked!`)}
                 >
                   Visit Website{" "}
-                </BtnBlack>
+                </BtnPurple>
               </div>
               <div className="flex flex-row justify-between py-8 hover:brightness-105">
                 <div className="">

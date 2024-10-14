@@ -9,6 +9,7 @@ const Users = () => {
     const [loading, setLoading] = useState(true);
 
     const handleGetUsers = async () => {
+        console.log('here')
         try {
             setLoading(true);
             const response = await getUsers();
@@ -35,7 +36,7 @@ const Users = () => {
 
     return (
         <div className='flex-1 overflow-auto relative z-10 mx-auto py-6 px-4 lg:px-8'>
-            <UsersList usersData={users} />
+            <UsersList usersData={users} handleGetUsers={handleGetUsers} />
         </div>
     );
 };

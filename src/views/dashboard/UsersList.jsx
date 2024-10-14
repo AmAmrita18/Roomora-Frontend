@@ -1,12 +1,17 @@
 import { motion } from "framer-motion";
 import { Edit, Search, Trash2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { FcCancel } from "react-icons/fc";
+import { FaCheckCircle } from "react-icons/fa";
 import hotelIcon from "../../assets/images/common/hotel_icon.png"
+import { AuthContext } from "../../context/AuthContext";
 
 
-const UsersList = ({usersData}) => {
+const UsersList = ({usersData, handleGetUsers}) => {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [filteredUsers, setFilteredUsers] = useState(usersData);
+
+	const {updateUserStatus} = useContext(AuthContext)
 
 	const handleSearch = (e) => {
 		const term = e.target.value.toLowerCase();
@@ -17,6 +22,16 @@ const UsersList = ({usersData}) => {
 
 		setFilteredUsers(filtered);
 	};
+
+	const handleStatusChange = async (userId, status) => {
+		const res = await updateUserStatus({userId, status})
+		if(!res) {
+			alert('Please try again!')
+		} else {
+			alert('User Status Updated Successfully')
+			handleGetUsers()
+		}
+	}
 
 	useEffect(() => {
 		console.log({usersData})
@@ -62,6 +77,9 @@ const UsersList = ({usersData}) => {
 								Location
 							</th>
 							<th className='px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider'>
+								Status
+							</th>
+							<th className='px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider'>
 								Actions
 							</th>
 						</tr>
@@ -96,8 +114,17 @@ const UsersList = ({usersData}) => {
 									{user.address?.city || '-'}
 								</td>
 								<td className='px-6 py-4 whitespace-nowrap text-sm text-gray-300'>
-									<button className='text-red-400 hover:text-red-300'>
-										<Trash2 size={18} />
+									{user.status || '-'}
+								</td>
+								<td className='px-6 py-4 whitespace-nowrap text-sm text-gray-300'>
+									<button className='text-red-400 hover:text-red-300 cursor-pointer'>
+										{
+											user.status === 'active' ? (
+												<FcCancel onClick={() => handleStatusChange(user._id, 'disabled')} className="text-2xl"/>
+											) : (
+												<FaCheckCircle onClick={() => handleStatusChange(user._id, 'active')} className="text-green-600 text-xl" />
+											)
+										}
 									</button>
 								</td>
 							</motion.tr>

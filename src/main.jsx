@@ -28,10 +28,10 @@ createRoot(document.getElementById('root')).render(
           <Route path='mainproperty' element={<Properties/>} />
           <Route path='about' element={<About />} />
           <Route path='properties' element={<Properties />} />
-          <Route path='property/:id' element={<PropertiesDetails />} />
+          <Route path='property/:hotel_id' element={<PropertiesDetails />} />
           <Route path='contact' element={<Contact/>} />
           <Route path='dashboard' element={<AdminProtectedRoute element={<Dashboard />} />}>
-            <Route path='profile' element={<AdminProfilePage />} />
+            <Route path='' element={<AdminProfilePage />} />
             <Route path='addHotel' element={<AddHotel />} />
             <Route path='hotels' element={<Hotels />} />
             <Route path='users' element={<Users />} />

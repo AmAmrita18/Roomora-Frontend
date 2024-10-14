@@ -43,12 +43,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const BookingInvoice = ({ user, hotel, room, checkIn, checkOut }) => (
+const BookingInvoice = ({ user, hotel, room, checkIn, checkOut, totalPrice }) => (
   <Document>
     <Page style={styles.page}>
       <Text style={styles.header}>Hotel Booking Invoice</Text>
 
-      {/* User Details */}
       <View style={styles.section}>
         <Text style={styles.label}>User Details</Text>
         <View style={styles.row}>
@@ -65,7 +64,6 @@ const BookingInvoice = ({ user, hotel, room, checkIn, checkOut }) => (
         </View>
       </View>
 
-      {/* Hotel Details */}
       <View style={styles.section}>
         <Text style={styles.label}>Hotel Details</Text>
         <View style={styles.row}>
@@ -78,7 +76,6 @@ const BookingInvoice = ({ user, hotel, room, checkIn, checkOut }) => (
         </View>
       </View>
 
-      {/* Booking Details */}
       <View style={styles.section}>
         <Text style={styles.label}>Booking Details</Text>
         <View style={styles.row}>
@@ -91,19 +88,16 @@ const BookingInvoice = ({ user, hotel, room, checkIn, checkOut }) => (
         </View>
       </View>
 
-      {/* Total Cost */}
       <View>
-        <Text style={styles.total}>Total Cost: $1000</Text>
+        <Text style={styles.total}>Total Cost: Rs. {totalPrice}</Text>
       </View>
     </Page>
   </Document>
 );
 
-// Parent Component with PDF Download Link
 const InvoicePage = ({ bookingDetails }) => {
   return (
     <div>
-      <h2>Download Booking Invoice</h2>
       <PDFDownloadLink
         document={
           <BookingInvoice
@@ -112,7 +106,7 @@ const InvoicePage = ({ bookingDetails }) => {
             room={bookingDetails?.room}
             checkIn={bookingDetails?.check_in}
             checkOut={bookingDetails?.check_out}
-            // totalCost={bookingDetails.totalCost}
+            totalPrice={bookingDetails.totalPrice}
           />
         }
         fileName="booking-invoice.pdf"

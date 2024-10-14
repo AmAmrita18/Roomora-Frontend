@@ -11,17 +11,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 const SIDEBAR_ITEMS = [
-  { name: "Overview", icon: FaChartBar, color: "#6366f1", href: "/" },
+  // { name: "Overview", icon: FaChartBar, color: "#6366f1", href: "/" },
+  { name: "Profile", icon: RiUserSettingsFill, color: "#6EE7B7", href: "/dashboard", },
   { name: "Hotels", icon: FaHotel, color: "#8B5CF6", href: "/dashboard/hotels" },
   { name: "Add Hotel", icon: MdAutoGraph, color: "#10B981", href: "/dashboard/addHotel" },
-  { name: "Users", icon: FaUsersCog, color: "#EC4899", href: "/dashboard/users" },
-  { name: "Bookings", icon: MdAutoGraph, color: "#10B981", href: "/dashboard/bookings" },
-  {
-    name: "Profile",
-    icon: RiUserSettingsFill,
-    color: "#6EE7B7",
-    href: "/dashboard/profile",
-  },
+  { name: "Users", icon: FaUsersCog, color: "#6366f1", href: "/dashboard/users" },
+  { name: "Bookings", icon: FaChartBar, color: "#10B981", href: "/dashboard/bookings" },
 ];
 
 const Sidebar = () => {

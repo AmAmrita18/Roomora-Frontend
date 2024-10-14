@@ -5,11 +5,12 @@ import Achievement from './Achievement'
 import Experience from './Experience'
 import ValuedClients from './valuedClients'
 import Cta from '../home/Cta'
+import HeroHome from '../home/HeroHome'
 
 const About = () => {
   return (
     <div>
-        <HeroAbout/>
+        <HeroHome/>
         <Values/>
         <Achievement/>
         <Experience/>

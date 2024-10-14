@@ -6,11 +6,15 @@ import FAQ from './FAQ'
 import Cta from './Cta'
 import Gallery from './Gallery'
 import HomeProperties from './HomeProperties'
+import HeroAbout from '../about/heroAbout'
+import PropertiesSection from "../properties/PropertiesSection.jsx";
+
 
 const Home = () => {
   return (
     <div>
-        <HeroHome/>
+        {/* <HeroAbout/> */}
+        <PropertiesSection isHome={true}/>
         <HomeProperties />
         <HomeServices/>
         <Gallery/>

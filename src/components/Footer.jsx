@@ -30,8 +30,8 @@ const navOptions = [
 
 const Footer = () => {
   return (
-    <div className='w-full border-t border-borderCol'>
-      <div className="w-[90%] max-w-[1200px] mx-auto py-12 flex flex-col justify-center items-center gap-y-4 px-6 rounded-full">
+    <div className='w-full '>
+      <div className="w-[90%] max-w-[1200px] mx-auto py-12 border-t border-borderCol flex flex-col justify-center items-center gap-y-4 px-6 ">
         <div className="flex pb-8 items-center gap-x-2">
           <img src={logo} alt="..." className='w-[32px] h-[32px] object-cover' />
           <h2 className='text-[24px]  font-[500] text-primaryText leading-[27px]'>Roomora</h2>

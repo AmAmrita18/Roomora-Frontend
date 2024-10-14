@@ -10,7 +10,7 @@ const Navbar = () => {
   const {user, admin} = useContext(AuthContext) 
   const navItems = [
     { name: 'Home', path: '/' },
-    { name: 'Properties', path: '/properties' },
+    // { name: 'Properties', path: '/properties' },
     { name: 'About Us', path: '/about' },
     { name: 'Contact Us', path: '/contact' },
   ];
@@ -27,7 +27,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="w-full gradientBackground py-1 shadow-xl border-b-[0.5px] border-borderCol">
+      <div className="w-full gradientBackground py-1 shadow-xl border-b border-borderCol sticky top-0 z-50">
         <div className="w-[80%] max-w-[1200px] py-4 mx-auto flex justify-between">
           <div className="flex gap-3 items-center">
             <img src={logo} alt="Logo" width={48} height={48} className="w-[48px] h-[48px]" />

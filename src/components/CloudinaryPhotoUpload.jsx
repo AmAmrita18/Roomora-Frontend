@@ -4,6 +4,7 @@ import { Cloudinary } from "@cloudinary/url-gen";
 import { AdvancedImage } from '@cloudinary/react';
 import { fill } from "@cloudinary/url-gen/actions/resize";
 import { Loader2, X } from 'lucide-react';
+import BtnPurple from './Buttons/BtnPurple';
 
 // Initialize Cloudinary instance
 const cld = new Cloudinary({
@@ -84,7 +85,7 @@ const CloudinaryPhotoUpload = () => {
         ))}
       </div>
       <div className="flex items-center space-x-4">
-        <label className="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+        <label className="cursor-pointer bg-purple hover:bg-blue-600 text-white px-5 py-3 rounded-lg">
           {uploading ? (
             <span className="flex items-center">
               <Loader2 className="animate-spin mr-2" size={16} />

@@ -17,16 +17,13 @@ export default function LoginForm({ closeModal }) {
 
   const onSubmit = async (data) => {
     const { email, password, name } = data;
-    const role = isAdmin ? "admin" : "user";
 
     if (isLogin) {
       try {
         const res = isAdmin
           ? await loginAdmin({ email, password })
-          : await login({ email, password });
-        if (!res) {
-          alert("Login Failed!");
-        } else {
+          : await login({ email, password })
+        if (res) {
           alert(`${isAdmin ? "Admin" : "User"} Login Successful`);
           closeModal();
         }

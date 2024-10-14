@@ -20,9 +20,12 @@ const Test = () => {
     };
 
     const handleBooking = async (hotelId, roomId) => {
+        if (!user) {
+            alert('Please login as user to make bookings')
+            return
+        }
         // console.log("Ola!! Hotel Booked!!!")
-        console.log({hotelId, roomId})
-        await bookHotel({user: user._id, hotel: hotelId, room: roomId, "check_in": "2024-10-23T23:12:20.000Z","check_out": "2024-10-25T23:12:20.000Z" })
+        await bookHotel({user: user._id || '', hotel: hotelId, room: roomId, "check_in": "2024-10-23T23:12:20.000Z","check_out": "2024-10-25T23:12:20.000Z" })
     }
 
     useEffect(() => {

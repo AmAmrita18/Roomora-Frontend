@@ -1,23 +1,22 @@
 import { motion } from "framer-motion";
 import { AuthContext } from "../../context/AuthContext";
-import { useContext, useState } from "react";
+import { useContext, useState,useEffect } from "react";
 import Avatar from "react-avatar";
 import constants from "../../utils/constants.js";
 import BtnBlack from "../../components/Buttons/BtnBlack.jsx";
 
 const AdminProfilePage = () => {
-  const { admin, logout, updateProfile } = useContext(AuthContext);
+  const { admin, setAdmin, logout, updateProfile } = useContext(AuthContext);
   const [isEditing, setIsEditing] = useState(false);
+  const [updated, setUpdated] = useState(false)
   const [isEditingPassword, setIsEditingPassword] = useState(false);
-  const [newProfilePhoto, setNewProfilePhoto] = useState(null);
-  const [previewPhoto, setPreviewPhoto] = useState(
-    admin?.profile_photo || null
-  );
+  // const [newProfilePhoto, setNewProfilePhoto] = useState(null);
+  // const [previewPhoto, setPreviewPhoto] = useState(
+  //   admin?.profile_photo || null
+  // );
 
-  // Admin details form state
   const [adminDetails, setAdminDetails] = useState(admin);
 
-  // Address fields in the form
   const [address, setAddress] = useState({
     city: admin?.address?.city || "",
     state: admin?.address?.state || "",
@@ -46,30 +45,43 @@ const AdminProfilePage = () => {
     });
   };
 
-  // Handle profile photo upload and preview
-  const handleProfilePhotoChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setNewProfilePhoto(file);
+  // const handleProfilePhotoChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     setNewProfilePhoto(file);
 
-      // Preview the image
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewPhoto(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleSaveChanges = () => {
-	setAdminDetails({...adminDetails, address:address})
-    updateProfile(adminDetails)
-    alert("Profile Updated!");
-  };
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setPreviewPhoto(reader.result);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   const handleLogout = () => {
     logout();
   };
+
+  const handleSaveChanges = () => {
+    setAdminDetails((prevDetails) => ({
+      ...prevDetails,
+      address: address,
+    }));
+    setUpdated(true);
+    
+  };
+
+  useEffect(() => {
+    (async () => {
+      if (updated) {
+        const updatedProfile = await updateProfile(adminDetails);
+        console.log({updatedProfile})
+        setAdmin(updatedProfile)
+        handleEditToggle()
+        setUpdated(false);
+      }
+    })()
+  }, [adminDetails, updated]);
 
   return (
     <motion.div
@@ -80,19 +92,19 @@ const AdminProfilePage = () => {
     >
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          {previewPhoto ? (
+          {/* {previewPhoto ? (
             <img
               src={previewPhoto}
               alt="Profile"
               className="rounded-full w-24 h-24 object-cover mr-4"
             />
-          ) : (
+          ) : ( */}
             <Avatar
               name={admin.name}
               round={true}
               size="60"
             />
-          )}
+          {/* )} */}
 
           <div>
             <h3 className="text-2xl font-semibold text-gray-100">
@@ -111,8 +123,7 @@ const AdminProfilePage = () => {
         </button>
       </div>
 
-      {/* Form Section */}
-      {isEditing && (
+      {/* {isEditing && (
         <div className="mb-6">
           <h4 className="text-lg font-semibold text-gray-100 mb-2">
             Update Profile Photo
@@ -124,11 +135,9 @@ const AdminProfilePage = () => {
             className="block w-full text-gray-200 file:bg-indigo-600 file:border-none file:py-2 file:px-4 file:rounded-lg file:cursor-pointer file:mr-4"
           />
         </div>
-      )}
+      )} */}
 
-      {/* Admin Details Form */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Name Field */}
         <div className="gradientBackground p-4 rounded-lg border border-borderCol">
           <h4 className="text-lg font-semibold text-gray-100 mb-2">Name</h4>
           {isEditing ? (
@@ -144,13 +153,11 @@ const AdminProfilePage = () => {
           )}
         </div>
 
-        {/* Email Field (Non-editable) */}
         <div className="gradientBackground p-4 rounded-lg border border-borderCol">
           <h4 className="text-lg font-semibold text-gray-100 mb-2">Email</h4>
           <p className="text-gray-300">{adminDetails.email}</p>
         </div>
 
-        {/* Phone Number Field */}
         <div className="gradientBackground p-4 rounded-lg border border-borderCol">
           <h4 className="text-lg font-semibold text-gray-100 mb-2">
             Phone Number
@@ -170,7 +177,6 @@ const AdminProfilePage = () => {
           )}
         </div>
 
-        {/* Address Fields */}
         <div className="gradientBackground p-4 rounded-lg border border-borderCol md:col-span-2">
           <h4 className="text-lg font-semibold text-gray-100 mb-2">Address</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -194,7 +200,6 @@ const AdminProfilePage = () => {
         </div>
       </div>
 
-      {/* Save Button */}
       {isEditing && (
         <div className="flex justify-end mt-6">
           <button
@@ -205,7 +210,6 @@ const AdminProfilePage = () => {
           </button>
         </div>
       )}
-      {/* Password Update Section */}
       <div className="gradientBackground p-4 rounded-lg flex justify-between border border-borderCol mt-6">
         <div className="flex flex-col gap-y-3">
           <h4 className="text-lg font-semibold text-gray-100 mb-2">
@@ -248,6 +252,6 @@ const AdminProfilePage = () => {
       </div>
     </motion.div>
   );
-};
+}
 
 export default AdminProfilePage;

@@ -1,86 +1,151 @@
-import React, {useState} from "react";
-import { estates } from "./estates.js";
-import { FaBed, FaHashtag } from "react-icons/fa6";
-import { FaBath } from "react-icons/fa";
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import Loader from "../../components/Loader/Loader";
 import { Link } from "react-router-dom";
 import BtnBlack from "../../components/Buttons/BtnPurple.jsx";
 import { FaCircleArrowLeft } from "react-icons/fa6";
 import { FaArrowCircleRight } from "react-icons/fa";
+import SearchBar from "../../components/SearchBar/SearchBar";
+import DropdownBar from "../../components/Dropdown/DropdownBar";
 
-const PropertiesCard = ({isHome = false}) => {
-const [currentPage, setCurrentPage] = useState(1);
+const PropertiesCard = ({ isHome = false }) => {
+  const { getHotels } = useContext(AuthContext);
+  const [hotels, setHotels] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filteredHotels, setFilteredHotels] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordsPerPage = isHome ? 6 : 6;
+  const lastIndex = currentPage * recordsPerPage;
+  const firstIndex = lastIndex - recordsPerPage;
+  const [records, setRecords] = useState([]);
 
-const recordsPerPage = isHome ? 3 : 6;
-const lastIndex = currentPage * recordsPerPage;
-const firstIndex = lastIndex - recordsPerPage
-const records = estates.slice(firstIndex, lastIndex);
-const nPage = Math.ceil(estates.length / recordsPerPage);
-const numbers = [...Array(nPage + 1).keys()].slice(1);
+  const nPage = Math.ceil(filteredHotels.length / recordsPerPage);
+  const numbers = [...Array(nPage + 1).keys()].slice(1);
 
-function prevPage(){
-  if(currentPage !== firstIndex){
-    setCurrentPage(currentPage - 1);
+  const prevPage = () => {
+    if (currentPage !== 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const changeCurrentPage = (id) => {
+    setCurrentPage(id);
+  };
+
+  const nextPage = () => {
+    if (currentPage !== nPage) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handleGetHotels = async () => {
+    try {
+      setLoading(true);
+      const response = await getHotels();
+      setHotels(response);
+      setFilteredHotels(response); // Set filteredHotels to the full list initially
+      setRecords(response.slice(firstIndex, lastIndex)); // Set initial records
+    } catch (error) {
+      console.error("Error fetching hotels:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSearch = (searchTerm) => {
+    const term = searchTerm.toLowerCase();
+    const filtered = hotels.filter(
+      (hotel) =>
+        hotel.hotel_name.toLowerCase().includes(term) ||
+        hotel.location.city.toLowerCase().includes(term) ||
+        hotel.hotel_type.toLowerCase().includes(term)
+    );
+    setFilteredHotels(filtered); // Update filtered hotels
+    setRecords(filtered.slice(firstIndex, lastIndex)); // Update records based on the filtered list
+  };
+
+  // Update records when filteredHotels or currentPage changes
+  useEffect(() => {
+    setRecords(filteredHotels.slice(firstIndex, lastIndex));
+  }, [filteredHotels, currentPage]);
+
+  useEffect(() => {
+    handleGetHotels(); // Fetch hotels on component mount
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex flex-1 items-center justify-center h-[80vh]">
+        <Loader />
+      </div>
+    );
   }
-}
-function changeCurrentPage(id){
-  setCurrentPage(id);
-}
-function nextPage(){
-
-  if(currentPage !== lastIndex){
-    setCurrentPage(currentPage + 1);
-  }
-}
 
   return (
-    <div className="w-full flex flex-col pt-16">
-      <div className="grid lg:grid-cols-3  md:grid-cols-2 grid-cols-1 gap-x-6 gap-y-6">
-        {records.map((est, idx) => (
-         ((isHome && idx <=2) || !isHome) && <Link to={`/property/${est.id}`} key={est.id}>
-            <div
-              key={est.id}
-              className="flex flex-col shadow-2xl  transition-all duration-700 ease-in-out  hover:scale-95 cardsStyling"
-            >
-              <img
-                src={est.images[0]}
-                alt="thumbnail"
-                className="w-full h-52 object-cover rounded-xl brightness-90"
-              />
-              <h3 className="text-primaryText text-[24px] py-4 leading-[27.65px] tracking-[-0.6px] ">
-                {est.title}
-              </h3>
-              
-              <div className="flex flex-row justify-between  py-4">
-                <div className="text-primaryText">
-                  <h1>Price</h1> 
-                  <h1>{est.price}</h1>                
-                </div>
-                <BtnBlack
-                  onClick={() => alert("Contact Us button clicked!")}
-                  className=""
+    <>
+      <SearchBar onSearch={handleSearch} />
+      <DropdownBar />
+      <div className="w-full flex flex-col pt-10">
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-x-6 gap-y-6">
+          {records.map((hotel, idx) =>
+            ((isHome && idx <= 2) || !isHome) && (
+              <Link to={`/property/${hotel._id}`} key={hotel.hotel_id}>
+                <div
+                  key={hotel._id}
+                  className="flex flex-col shadow-2xl transition-all duration-700 ease-in-out hover:scale-95 cardsStyling"
                 >
-                  View Details
-                </BtnBlack>
-              </div>
-            </div>
-          </Link>
-        ))}
-        
-      </div>
-      <div className="flex gap-2 items-center justify-center pt-10">
-          <button disabled={currentPage===1} onClick={() => prevPage()} className="mr-3 text-[40px] text-backgroundDark border border-purple bg-purple rounded-full "><FaCircleArrowLeft />
+                  <img
+                    src={hotel.photos[0]}
+                    alt="thumbnail"
+                    className="w-full h-52 object-cover rounded-xl brightness-90"
+                  />
+                  <h3 className="text-primaryText text-[24px] py-4 leading-[27.65px] tracking-[-0.6px] ">
+                    {hotel.hotel_name}
+                  </h3>
+                  <p className="customPara">{hotel.rooms.total_rooms}</p>
+                  <div className="flex flex-row justify-between py-4">
+                    <div className="text-primaryText">
+                      <h1 className="text-[15px]">{hotel.location.city}</h1>
+                      <h1 className="text-[18px] font-[400]">{hotel.hotel_type}</h1>
+                    </div>
+                    <BtnBlack>View Details</BtnBlack>
+                  </div>
+                </div>
+              </Link>
+            )
+          )}
+        </div>
+
+        <div className="flex gap-2 items-center justify-center pt-10">
+          <button
+            disabled={currentPage === 1}
+            onClick={prevPage}
+            className="mr-3 text-[40px] text-backgroundDark border border-purple bg-purple rounded-full"
+          >
+            <FaCircleArrowLeft />
           </button>
-         {
-          numbers.map((n, i) =>(
-            (<div className="" key={i}>
-              <button onClick={() => changeCurrentPage(n)} className={`text-primaryText px-3 w-[35px] rounded-xl border border-borderCol   bg-backgroundDark text-[20px] ${currentPage === n ? 'bg-purple':""} `}>{n}</button>
-            </div>)
-          ))
-         }
-          <button disabled={currentPage===nPage} onClick={() => nextPage()} className="ml-3 text-[40px] bg-purple text-backgroundDark rounded-full "><FaArrowCircleRight />
+          {numbers.map((n, i) => (
+            <div className="" key={i}>
+              <button
+                onClick={() => changeCurrentPage(n)}
+                className={`text-primaryText px-3 w-[35px] rounded-xl border border-borderCol bg-backgroundDark text-[20px] ${
+                  currentPage === n ? "bg-purple" : ""
+                } `}
+              >
+                {n}
+              </button>
+            </div>
+          ))}
+          <button
+            disabled={currentPage === nPage}
+            onClick={nextPage}
+            className="ml-3 text-[40px] bg-purple text-backgroundDark rounded-full"
+          >
+            <FaArrowCircleRight />
           </button>
         </div>
-    </div>
+      </div>
+    </>
   );
 };
 

@@ -1,14 +1,10 @@
-// src/components/DropdownList.jsx
-
 import React, { useState } from "react";
 import { RiArrowDropDownLine, RiArrowDropUpLine } from "react-icons/ri";
 import { FaLocationDot } from "react-icons/fa6";
 
-// Dynamic DropdownList Component
-const DropdownList = ({ dropdowns = [] }) => {  // Default value if dropdowns is undefined
+const DropdownList = ({ dropdowns = [] }) => {
   const [openDropdown, setOpenDropdown] = useState(null);
 
-  // Toggle function to open/close dropdowns based on index
   const toggleDropdown = (index) => {
     setOpenDropdown(openDropdown === index ? null : index);
   };
@@ -38,14 +34,14 @@ const DropdownList = ({ dropdowns = [] }) => {  // Default value if dropdowns is
               </button>
               {openDropdown === index && (
                 <ul className="bg-[#1E1E1E] shadow-2xl md:w-[19%] w-[80%] absolute z-10 mt-4 flex flex-col rounded-3xl text-start">
-                  {dropdown.options.map((option, idx) => (
+                  {dropdown.options && dropdown.options.map(({value, label}, idx) => (
                     <li
                       key={idx}
                       className={`text-[17px] leading-[19.58px] tracking-[-0.43px] text-primaryText px-8 py-5 ${
                         idx === 0 ? "rounded-t-3xl" : ""
                       } ${idx === dropdown.options.length - 1 ? "rounded-b-3xl" : ""} w-full hover:bg-purple`}
                     >
-                      {option}
+                      {label}
                     </li>
                   ))}
                 </ul>
