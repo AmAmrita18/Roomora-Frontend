@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { Cloudinary } from "@cloudinary/url-gen";
 import { AdvancedImage } from '@cloudinary/react';
@@ -16,7 +16,7 @@ const cld = new Cloudinary({
 const CloudinaryPhotoUpload = () => {
   const [uploading, setUploading] = useState(false);
   const { control, watch } = useFormContext();
-  const photos = watch('photos') || [];
+  const photos = watch('photos') || []; // Ensure this is correctly watching the 'photos' field
   const { fields, append, remove } = useFieldArray({
     name: 'photos',
     control,
@@ -63,26 +63,35 @@ const CloudinaryPhotoUpload = () => {
     }
   };
 
+
+  useEffect(() => {
+    const photos = watch('photos') || []; // Ensure this is correctly watching the 'photos' field
+    fields.map((field, index) => {
+      console.log({field})
+    })
+    console.log({photos})
+  }, [])
+
   return (
     <div className="mb-6">
       <h3 className="text-lg font-semibold mb-2">Upload Photos</h3>
       <div className="flex flex-wrap gap-4 mb-4">
-        {fields.map((field, index) => (
-          <div key={field.id} className="relative">
-            <AdvancedImage
-              cldImg={cld.image(field.publicId).resize(fill().width(96).height(96))}
-              alt={`Uploaded ${index + 1}`}
-              className="w-24 h-24 object-cover rounded-md"
-            />
-            <button
-              type="button"
-              onClick={() => remove(index)}
-              className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1"
-            >
-              <X size={16} />
-            </button>
-          </div>
-        ))}
+      {fields.map((field, index) => (
+  <div key={field.id} className="relative">
+    <AdvancedImage
+      cldImg={cld.image(field.publicId).resize(fill().width(96).height(96))}
+      alt={`Uploaded ${index + 1}`}
+      className="w-24 h-24 object-cover rounded-md"
+    />
+    <button
+      type="button"
+      onClick={() => remove(index)}
+      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1"
+    >
+      <X size={16} />
+    </button>
+  </div>
+))}
       </div>
       <div className="flex items-center space-x-4">
         <label className="cursor-pointer bg-purple hover:bg-blue-600 text-white px-5 py-3 rounded-lg">

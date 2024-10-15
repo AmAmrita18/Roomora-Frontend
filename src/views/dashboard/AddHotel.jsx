@@ -192,6 +192,13 @@ const AddHotel = () => {
             </div>
           ))}
         </div>
+
+        {/* Photos */}
+        <CloudinaryPhotoUpload
+          register={register}
+          setValue={setValue}
+          watch={watch}
+        />
         {/* Rooms */}
         <h3 className="text-lg font-semibold mb-2 mt-6">Rooms</h3>
         {roomFields.map((room, index) => (
@@ -250,7 +257,7 @@ const AddHotel = () => {
 
             <div className="grid grid-cols-4 gap-x-3">
               {roomFacilityFields.map((field, idx) => (
-                <div key={field.id} className="mb-2">
+                <div key={field?.id} className="mb-2">
                   <input
                     type="text"
                     {...register(`rooms[${index}].room_facilities[${idx}]`, {
@@ -279,12 +286,7 @@ const AddHotel = () => {
         >
           Add Room
         </BtnPurple>
-        {/* Photos */}
-        <CloudinaryPhotoUpload
-          register={register}
-          setValue={setValue}
-          watch={watch}
-        />
+        
         {/* Owner Details */}
         <h3 className="text-lg font-semibold mb-2 mt-6">Owner Details</h3>
         <div className="grid grid-cols-2 gap-4 mb-4">

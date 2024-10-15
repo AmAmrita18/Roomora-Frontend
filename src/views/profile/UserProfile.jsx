@@ -102,24 +102,27 @@ const UserProfile = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="flex flex-col w-[80%] mb-6">
-          <div className="grid grid-cols-2">
+        <div className="flex flex-col items-center justify-center mx-auto w-[80%] mb-6">
+          <div className="flex flex-row">
             <button
               onClick={() => setViewProfile(true)}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition duration-200"
+              className={`${
+                viewProfile ? "bg-purple" : "bg-secondryBackground"
+              } text-white font-bold py-2 px-4 rounded transition duration-200`}
             >
               View Profile
             </button>
+
             <button
               onClick={() => setViewProfile(false)}
-              className={`bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition duration-200 ${
-                !viewProfile && "bg-purple"
-              }`}
+              className={`${
+                !viewProfile ? "bg-purple" : "bg-secondryBackground"
+              } text-white font-bold py-2 px-4 rounded transition duration-200`}
             >
               View Bookings
             </button>
           </div>
-          <h2 className={`text-2xl font-bold text-gray-100`}>
+          <h2 className={`text-[30px] mt-5 font-bold text-gray-100`}>
             {viewProfile ? "Profile" : "Booking History"}
           </h2>
         </div>

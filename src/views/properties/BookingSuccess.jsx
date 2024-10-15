@@ -10,38 +10,47 @@ const BookingSuccess = ({ isOpen, onClose, bookingDetails }) => {
   }, []);
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-70">
-      <div className="bg-gray-900 rounded-2xl shadow-2xl p-8 w-full max-w-lg relative text-white">
+    <div className="fixed inset-0 flex items-center justify-center z-50  bg-opacity-70">
+      <div className="gradientBackground border border-purple rounded-2xl shadow-2xl p-8 w-full max-w-lg relative text-white">
         {/* Title */}
         <h2 className="text-3xl font-bold text-purple-400 mb-6 text-center">
           Booking Confirmed!
         </h2>
 
         {/* Booking Information */}
-        <div className="space-y-4 text-lg text-gray-300">
-          <p>
-            <span className="text-purple-400 font-semibold">Hotel:</span> {bookingDetails.hotel.hotel_name}
+        <div className="space-y-4 text-lg  text-gray-300">
+          <p className="bookingSuccessHeading">
+            {" "}
+            Hotel:
+            <span className="bookingSuccessSpan">{bookingDetails.hotel.hotel_name}</span>
           </p>
-          <p>
-            <span className="text-purple-400 font-semibold">Room Type:</span> {bookingDetails.room.roomType}
+          <p className="bookingSuccessHeading">
+            Room Type:<span className="bookingSuccessSpan"> {bookingDetails.room.roomType}</span>
           </p>
-          <p>
-            <span className="text-purple-400 font-semibold">User:</span> {bookingDetails.user.name}
+          <p className="bookingSuccessHeading">User:
+            <span className="bookingSuccessSpan"> {bookingDetails.user.name}</span> 
           </p>
-          <p>
-            <span className="text-purple-400 font-semibold">Email:</span> {bookingDetails.user.email}
+          <p className="bookingSuccessHeading">
+            Email:
+            <span className="bookingSuccessSpan">{bookingDetails.user.email}</span>
           </p>
-          <p>
-            <span className="text-purple-400 font-semibold">Phone:</span> {bookingDetails.user.phone}
+          <p className="bookingSuccessHeading">
+            Phone:
+            <span className="bookingSuccessSpan"> {bookingDetails.user.phone}</span>
           </p>
-          <p>
-            <span className="text-purple-400 font-semibold">Check-in:</span> {bookingDetails.check_in}
+          <p className="bookingSuccessHeading">
+            Check-in:
+            <span className="bookingSuccessSpan"> {bookingDetails.check_in} </span>
           </p>
-          <p>
-            <span className="text-purple-400 font-semibold">Check-out:</span> {bookingDetails.check_out}
+          <p className="bookingSuccessHeading">
+            Check-out:
+            <span className="bookingSuccessSpan">{bookingDetails.check_out}</span>
           </p>
-          <p className="text-xl font-bold text-purple-500">
-            Total Price: Rs {bookingDetails.totalPrice}
+          <p className="BookingSuccessHeading">
+            Total Price:{" "}
+            <span className=" bookingSuccessSpan">
+              Rs {bookingDetails.totalPrice}
+            </span>
           </p>
         </div>
 

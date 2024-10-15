@@ -1,12 +1,21 @@
-import Footer from './components/Footer';
-import { Outlet, useLocation } from 'react-router-dom';
-import Navbar from './components/Navbar';
+import Footer from "./components/Footer";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "./context/AuthContext";
 
 const Layout = () => {
   const location = useLocation();
+  const { admin } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  // Check if the current path is '/dashboard' or any sub-route of '/dashboard'
-  const hideFooter = location.pathname.startsWith('/dashboard');
+  const hideFooter = location.pathname.startsWith("/dashboard");
+
+  useEffect(() => {
+    if (admin) {
+      navigate("/dashboard");
+    }
+  }, [admin, navigate]);
 
   return (
     <>
@@ -15,6 +24,6 @@ const Layout = () => {
       {!hideFooter && <Footer />}
     </>
   );
-}
+};
 
 export default Layout;

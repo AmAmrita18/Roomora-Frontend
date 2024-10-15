@@ -1,13 +1,15 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import logo from '/logo.png';
 import BtnPurple from './Buttons/BtnPurple.jsx';
-import LoginForm from './Forms/LoginForm.jsx';
-import { IoIosCloseCircle } from "react-icons/io";
 import { AuthContext } from '../context/AuthContext.jsx';
 
 const Navbar = () => {
   const {user, admin} = useContext(AuthContext) 
+
+  const navigate = useNavigate()
+  const location = useLocation()
+
   const navItems = [
     { name: 'Home', path: '/' },
     // { name: 'Properties', path: '/properties' },
@@ -15,15 +17,9 @@ const Navbar = () => {
     { name: 'Contact Us', path: '/contact' },
   ];
 
-  const [showLogin, setShowLogin] = useState(false); // State to toggle login form modal
-
-  const toggleLoginForm = () => {
-    setShowLogin(!showLogin);
-  };
-
-  const closeModal = () => {
-    setShowLogin(false);
-  };
+  const handleNavigateToLogin = () => {
+    navigate("/auth", { state: { from: location } });
+  }
 
   return (
     <>
@@ -68,27 +64,12 @@ const Navbar = () => {
           {
             !user && !admin && (
             <div className="flex flex-row gap-4">
-              <BtnPurple onClick={toggleLoginForm} className="px-8">Login</BtnPurple>
+              <BtnPurple onClick={() => handleNavigateToLogin()} className="px-8">Login</BtnPurple>
             </div>
             )
           }
         </div>
       </div>
-
-      {/* Modal for Login Form */}
-      {showLogin && (
-        <div className="fixed inset-0 bg-backgroundDark  bg-opacity-70 flex justify-center items-center z-50">
-          <div className="bg-secondryBackground bg-opacity-90 border border-purple  p-8 rounded-lg shadow-2xl w-full max-w-md relative">
-            <button
-              className="absolute top-1 right-1 "
-              onClick={closeModal}
-            >
-              <IoIosCloseCircle className='text-[32px] text-primaryBackground hover:text-purple rounded-full  hover:text-opacity-60'/>
-            </button>
-            <LoginForm closeModal={closeModal} />
-          </div>
-        </div>
-      )}
     </>
   );
 };

@@ -89,7 +89,7 @@ const PropertiesCard = ({ isHome = false }) => {
         <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-x-6 gap-y-6">
           {records.map((hotel, idx) =>
             ((isHome && idx <= 2) || !isHome) && (
-              <Link to={`/property/${hotel._id}`} key={hotel.hotel_id}>
+              <Link to={`/property/${hotel._id}`} key={hotel._id}>
                 <div
                   key={hotel._id}
                   className="flex flex-col shadow-2xl transition-all duration-700 ease-in-out hover:scale-95 cardsStyling"

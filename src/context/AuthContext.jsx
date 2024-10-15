@@ -359,19 +359,25 @@ const AuthProvider = ({ children }) => {
     }
   }
 
-  const updateHotel = async ({id, hotelData}) => {
+  const updateHotel = async ({hotelData}) => {
     try {
-      const response = await fetch(`/hotel/update-hotel/${id}`, {
+      console.log({hotelData})
+      const response = await fetch(`${baseUrl}/hotel/update-hotel`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(hotelData),
       });
-      const result = await response.json();
-      // Handle success or error
+
+      const data = await response.json();
+      if (response.ok) {
+        return data.hotel;
+      } else {
+        throw new Error(data.error.message);
+      }
     } catch (error) {
-      console.error("Error updating hotel:", error);
+      console.error("Update failed:", error);
     }
   };
 

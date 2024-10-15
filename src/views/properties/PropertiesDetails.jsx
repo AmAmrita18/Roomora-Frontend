@@ -114,29 +114,36 @@ const PropertiesDetails = () => {
               {/* description  */}
               <div className="w-[40%] h-full  mb-10 lg:ml-6  shadow-2xl rounded-2xl ">
                 <div className=" px-6 py-6 flex flex-col gap-y-3 cardsStyling">
-                  <h1 className="text-primaryText text-[35px] md:font-normal font-bold lg:leading-[25.6px] leading-tight tracking-[-0.8px]">
+                  <h1 className="text-primaryText text-[35px] md:font-normal font-bold ">
                     {hotel_name}
                   </h1>
-                  <div className="flex flex-row justify-between pb-3 border-b border-b-borderCol">
-                    <h1 className="text-primaryText text-[22px] lg:leading-[25.6px] leading-tight tracking-[-0.8px]">
-                      {location?.city + ", " + location?.state + ", " + location?.country}
+                  <div className="flex flex-row justify-between items-center pb-3 border-b border-b-borderCol">
+                    <h1 className="text-primaryText text-[16px] ">
+                      {location?.city +
+                        ", " +
+                        location?.state +
+                        ", " +
+                        location?.country}
                     </h1>
-                    
+
                     <div className="flex flex-col">
-                      <h1 className="text-primaryText  pb-4 text-[18px] lg:leading-[25.6px] leading-tight tracking-[-0.8px]">
+                      {/* <h1 className="text-primaryText  pb-4 text-[18px] lg:leading-[25.6px] leading-tight tracking-[-0.8px]">
                         <span>Total Rooms: </span>{" "}
                         {rooms?.reduce(
                           (acc, curr) => acc + curr.total_rooms,
                           0
                         )}
-                      </h1>
-                      <h1 className="text-primaryText  pb-4 text-[18px] lg:leading-[25.6px] leading-tight tracking-[-0.8px]">
-                        <span>Available Rooms: </span>{" "}
+                      </h1> */}
+                      <h1 className="text-primaryText text-lg font-semibold ">
+                        {" "}
+                        Available Rooms:{" "}
+                        <span className="bg-primaryText bg-opacity-10 px-3 py-1 rounded-r-md rounded-tl-md shadow-md">
                         {rooms?.reduce(
                           (acc, curr) => acc + curr.available_rooms,
                           0
-                        )}
+                        )}                        </span>
                       </h1>
+                      
                     </div>
                   </div>
                   <div className="grid grid-cols-2  border-b pb-4 border-borderCol justify-between">
@@ -200,7 +207,7 @@ const PropertiesDetails = () => {
                         </div>
                       ))} */}
                     <p
-                      className="text-primaryText text-[15px] leading-[22px] tracking-[-0.38px] h-[180px] overflow-y-scroll"
+                      className="text-primaryText text-[15px]  h-[180px] overflow-y-scroll"
                       style={{
                         WebkitLineClamp: 8,
                         display: "-webkit-box",

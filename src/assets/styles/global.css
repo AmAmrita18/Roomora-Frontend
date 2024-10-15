@@ -64,3 +64,11 @@ body {
 .gradientBackground{
  @apply bg-gradient-to-br from-primaryBackground to-backgroundDark;
 }
+
+.bookingSuccessHeading{
+  @apply text-[20px] font-[500] text-primaryText;
+}
+
+.bookingSuccessSpan{
+  @apply bg-primaryText ml-3 bg-opacity-10 text-[17px] px-2 py-2 rounded-r-md rounded-tl-md shadow-md;
+}

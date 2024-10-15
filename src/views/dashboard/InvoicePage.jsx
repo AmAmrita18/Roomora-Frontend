@@ -52,15 +52,15 @@ const BookingInvoice = ({ user, hotel, room, checkIn, checkOut, totalPrice }) =>
         <Text style={styles.label}>User Details</Text>
         <View style={styles.row}>
           <Text style={styles.label}>Name: </Text>
-          <Text style={styles.value}>{user.name}</Text>
+          <Text style={styles.value}>{user?.name}</Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.label}>Email: </Text>
-          <Text style={styles.value}>{user.email}</Text>
+          <Text style={styles.value}>{user?.email}</Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.label}>Phone: </Text>
-          <Text style={styles.value}>{user.phone}</Text>
+          <Text style={styles.value}>{user?.phone}</Text>
         </View>
       </View>
 
@@ -68,11 +68,11 @@ const BookingInvoice = ({ user, hotel, room, checkIn, checkOut, totalPrice }) =>
         <Text style={styles.label}>Hotel Details</Text>
         <View style={styles.row}>
           <Text style={styles.label}>Hotel Name: </Text>
-          <Text style={styles.value}>{hotel.hotel_name}</Text>
+          <Text style={styles.value}>{hotel?.hotel_name}</Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.label}>Room Type: </Text>
-          <Text style={styles.value}>{room.roomType}</Text>
+          <Text style={styles.value}>{room?.roomType}</Text>
         </View>
       </View>
 

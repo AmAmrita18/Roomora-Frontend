@@ -14,14 +14,14 @@ const RoomType = () => {
   const [checkOutDate, setCheckOutDate] = useState("");
   const [selectedDays, setSelectedDays] = useState(1);
 
-   const [numOfRooms, setNumOfRooms] = useState(1);
+  const [numOfRooms, setNumOfRooms] = useState(1);
 
-   const handleNumOfRoomsChange = (e) => {
-     const value = parseInt(e.target.value);
-     if (value >= 1 && value <= 5) {
-       setNumOfRooms(value);
-     }
-   };
+  const handleNumOfRoomsChange = (e) => {
+    const value = parseInt(e.target.value);
+    if (value >= 1 && value <= 5) {
+      setNumOfRooms(value);
+    }
+  };
 
   // Handle Check-In Date Change and validate days
   const handleCheckInDateChange = (e) => {
@@ -78,7 +78,7 @@ const RoomType = () => {
       <div className="w-[90%] max-w-[1200px] mx-auto">
         {/* Date Selection Section */}
         <div className="bg-backgroundDark p-6 border border-borderCol rounded-lg shadow-lg mb-6">
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-4 gap-4">
             <div className="flex flex-col">
               <label htmlFor="checkIn" className="text-sm text-white mb-2">
                 Check-In Date:
@@ -107,22 +107,25 @@ const RoomType = () => {
               />
             </div>
             {/* Number of Rooms to Book */}
-      <div className="mb-4">
-        <label htmlFor="numOfRooms" className="text-sm text-primaryText mb-2 block">
-          Number of Rooms (1-5):
-        </label>
-        <input
-          type="number"
-          id="numOfRooms"
-          value={numOfRooms}
-          onChange={handleNumOfRoomsChange}
-          min="1"
-          max="5"
-          className="p-2 w-[100px] bg-primaryBackground text-white rounded"
-        />
-      </div>
+            <div className="mb-4">
+              <label
+                htmlFor="numOfRooms"
+                className="text-sm text-primaryText mb-2 block"
+              >
+                Number of Rooms (1-5):
+              </label>
+              <input
+                type="number"
+                id="numOfRooms"
+                value={numOfRooms}
+                onChange={handleNumOfRoomsChange}
+                min="1"
+                max="5"
+                className="p-2 w-full bg-primaryBackground text-white rounded"
+              />
+            </div>
             <div className="flex items-center">
-              <p className="text-[20px] text-primaryText border-l border-borderCol pl-4">
+              <p className="text-[20px] text-primaryText ">
                 Selected Days:{" "}
                 <span className="bg-purple px-3 rounded-md shadow-md">
                   {selectedDays}

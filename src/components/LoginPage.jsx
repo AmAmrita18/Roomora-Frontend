@@ -1,17 +1,20 @@
-import React, { useContext, useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import BtnPurple from "../Buttons/BtnPurple";
-import { AuthContext } from "../../context/AuthContext";
+import BtnPurple from "../components/Buttons/BtnPurple";
+import { AuthContext } from "../context/AuthContext";
+import { useLocation, useNavigate } from "react-router-dom"; // Import useLocation
+import { path } from "framer-motion/m";
 
-export default function LoginForm({ closeModal }) {
-  const { login, signup } = useContext(AuthContext);
+const LoginPage = () => {
+    const {user, admin, login, signup} = useContext(AuthContext)
+  const navigate = useNavigate();
+  const location = useLocation(); // Get the location state
   const [isLogin, setIsLogin] = useState(true);
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
-    watch, // to watch password for confirming password
+    formState: { errors }
   } = useForm();
 
   const onSubmit = async (data) => {
@@ -19,10 +22,11 @@ export default function LoginForm({ closeModal }) {
 
     if (isLogin) {
       try {
-        const res = await login({ email, password })
+        const res = await login({ email, password });
         if (res) {
           alert(`User Login Successful`);
-          closeModal();
+          console.log({location: location.state?.from?.pathname})
+          navigate(location.state?.from?.pathname || "/");
         }
       } catch (err) {
         alert("Login Failed!");
@@ -34,22 +38,32 @@ export default function LoginForm({ closeModal }) {
           alert("Signup Failed!");
         } else {
           alert("Signup Successful");
-          closeModal();
+          navigate(location.state?.from?.pathname || "/");
         }
       } catch (err) {
         alert("Signup Failed!");
       }
     }
-    // reset();
   };
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
   };
 
+    useEffect(() => {
+        console.log({location: location.state?.from?.pathname})
+        // console.log({location, pathname: location.pathname})
+        if(admin) {
+            navigate("/dashboard");
+        }
+        if(user) {
+            navigate("/")
+        }
+    }, [navigate, admin, user])
+
   return (
-    <div className="flex items-center text-primaryText">
-      <form
+    <div className='w-full bg-gradient-to-r from-backgroundDark from-30% via-backgroundDark via-70% to-[#2A213F] to-90% ... flex justify-center items-center min-h-screen'>
+        <form
         onSubmit={handleSubmit(onSubmit)}
         className=" bg-opacity-50 cardsStyling w-full max-w-md space-y-6"
       >
@@ -157,5 +171,7 @@ export default function LoginForm({ closeModal }) {
         </p>
       </form>
     </div>
-  );
+  )
 }
+
+export default LoginPage
