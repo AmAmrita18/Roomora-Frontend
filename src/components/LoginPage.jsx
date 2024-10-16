@@ -53,12 +53,13 @@ const LoginPage = () => {
 
     useEffect(() => {
         console.log({location: location.state?.from?.pathname})
-        if(admin) {
-            navigate("/dashboard");
-        }
+        
         if(user) {
             navigate("/")
         }
+        if(admin) {
+          navigate("/dashboard");
+      }
     }, [navigate, admin, user])
 
   return (

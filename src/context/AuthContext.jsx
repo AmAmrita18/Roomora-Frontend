@@ -6,6 +6,8 @@ const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [authToken, setAuthToken] = useState(null);
+  const [adminAuthToken, setAdminAuthToken] = useState(null);
+
   const [user, setUser] = useState(null);
   const [admin, setAdmin] = useState(null);
   const [dataLoading, setDataLoading] = useState(true)
@@ -15,17 +17,44 @@ const AuthProvider = ({ children }) => {
     checkAuthFromCookies();
   }, []);
 
+  // const checkAuthFromCookies = () => {
+  //   const token = Cookies.get("authToken");
+  //   const loggedInUser = Cookies.get("user");
+  //   const loggedInAdmin = Cookies.get("admin");
+  
+  //   if (token && (loggedInUser || loggedInAdmin)) {
+  //     try {
+  //       const userObject = loggedInUser && JSON.parse(loggedInUser);
+  //       const adminObject = loggedInAdmin && JSON.parse(loggedInAdmin);
+  //       setAuthToken(token);
+  //       setUser(userObject);
+  //       setAdmin(adminObject);
+  //     } catch (error) {
+  //       console.error("Error parsing user data from cookies:", error);
+  //     }
+  //   }
+  //   setDataLoading(false);
+  // };  
+
   const checkAuthFromCookies = () => {
     const token = Cookies.get("authToken");
+    const adminToken = Cookies.get("adminAuthToken");
     const loggedInUser = Cookies.get("user");
     const loggedInAdmin = Cookies.get("admin");
   
-    if (token && (loggedInUser || loggedInAdmin)) {
+    if (token && loggedInUser) {
       try {
         const userObject = loggedInUser && JSON.parse(loggedInUser);
-        const adminObject = loggedInAdmin && JSON.parse(loggedInAdmin);
         setAuthToken(token);
         setUser(userObject);
+      } catch (error) {
+        console.error("Error parsing user data from cookies:", error);
+      }
+    }
+    if (adminToken && loggedInAdmin) {
+      try {
+        const adminObject = loggedInAdmin && JSON.parse(loggedInAdmin);
+        setAdminAuthToken(adminToken);
         setAdmin(adminObject);
       } catch (error) {
         console.error("Error parsing user data from cookies:", error);
@@ -33,7 +62,7 @@ const AuthProvider = ({ children }) => {
     }
     setDataLoading(false);
   };  
-
+  
   const login = async (credentials) => {
     try {
       const response = await fetch(`${baseUrl}/auth/login`, {
@@ -62,6 +91,41 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  // const loginAdmin = async (credentials) => {
+  //   try {
+  //     const response = await fetch(`${baseUrl}/auth/login-admin`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(credentials),
+  //     });
+  
+  //     if (!response.ok) {
+  //       throw new Error("Failed to login"); 
+  //     }
+  
+  //     const data = await response.json(); 
+  
+      
+  //     if (data.access_token && data.admin) {
+  //       Cookies.set("authToken", data.access_token, { expires: 7 });
+  //       Cookies.set("admin", JSON.stringify(data.admin), { expires: 7 });
+  //       setAdmin({ admin: data.admin });
+  //       setAuthToken(data.access_token);
+  //       console.log({ data });
+
+  //       checkAuthFromCookies();
+  //       return data.admin;
+  //     } else {
+  //       throw new Error("Invalid response data"); 
+  //     }
+  //   } catch (error) {
+  //     console.error("Login failed:", error);
+  //     toast.error("Login failed"); 
+  //   }
+  // };
+  
   const loginAdmin = async (credentials) => {
     try {
       const response = await fetch(`${baseUrl}/auth/login-admin`, {
@@ -80,12 +144,12 @@ const AuthProvider = ({ children }) => {
   
       
       if (data.access_token && data.admin) {
-        Cookies.set("authToken", data.access_token, { expires: 7 });
+        Cookies.set("adminAuthToken", data.access_token, { expires: 7 });
         Cookies.set("admin", JSON.stringify(data.admin), { expires: 7 });
         setAdmin({ admin: data.admin });
-        setAuthToken(data.access_token);
+        setAdminAuthToken(data.access_token);
         console.log({ data });
-
+  
         checkAuthFromCookies();
         return data.admin;
       } else {
@@ -96,8 +160,6 @@ const AuthProvider = ({ children }) => {
       toast.error("Login failed"); 
     }
   };
-  
-
   const signup = async (userData) => {
     try {
       const response = await fetch(`${baseUrl}/auth/register`, {
