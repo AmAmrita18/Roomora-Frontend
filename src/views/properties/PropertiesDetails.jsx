@@ -1,10 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
-import { FaLongArrowAltRight } from "react-icons/fa";
 import { FaCircleCheck } from "react-icons/fa6";
 import { useParams } from "react-router-dom";
 import BtnPurple from "../../components/Buttons/BtnPurple.jsx";
 import BtnBlack from "../../components/Buttons/BtnBlack.jsx";
-import RoomSelection from "./RoomType.jsx";
 import RoomType from "./RoomType.jsx";
 import { AuthContext } from "../../context/AuthContext.jsx";
 import Loader from "../../components/Loader/Loader.jsx";
@@ -43,9 +41,7 @@ const PropertiesDetails = () => {
   };
 
   useEffect(() => {
-    // const prop = hotels.filter((h) => h.id == id);
     handleGetHotel();
-    // setEstate(prop[0]);
     setLoading(false);
   }, [hotel_id]);
 
@@ -111,7 +107,6 @@ const PropertiesDetails = () => {
                     )}
                 </div>
               </div>
-              {/* description  */}
               <div className="w-[40%] h-full  mb-10 lg:ml-6  shadow-2xl rounded-2xl ">
                 <div className=" px-6 py-6 flex flex-col gap-y-3 cardsStyling">
                   <h1 className="text-primaryText text-[35px] md:font-normal font-bold ">
@@ -127,23 +122,16 @@ const PropertiesDetails = () => {
                     </h1>
 
                     <div className="flex flex-col">
-                      {/* <h1 className="text-primaryText  pb-4 text-[18px] lg:leading-[25.6px] leading-tight tracking-[-0.8px]">
-                        <span>Total Rooms: </span>{" "}
-                        {rooms?.reduce(
-                          (acc, curr) => acc + curr.total_rooms,
-                          0
-                        )}
-                      </h1> */}
                       <h1 className="text-primaryText text-lg font-semibold ">
                         {" "}
                         Available Rooms:{" "}
                         <span className="bg-primaryText bg-opacity-10 px-3 py-1 rounded-r-md rounded-tl-md shadow-md">
-                        {rooms?.reduce(
-                          (acc, curr) => acc + curr.available_rooms,
-                          0
-                        )}                        </span>
+                          {rooms?.reduce(
+                            (acc, curr) => acc + curr.available_rooms,
+                            0
+                          )}{" "}
+                        </span>
                       </h1>
-                      
                     </div>
                   </div>
                   <div className="grid grid-cols-2  border-b pb-4 border-borderCol justify-between">
@@ -162,7 +150,6 @@ const PropertiesDetails = () => {
                     <BtnBlack
                       onClick={(e) => {
                         e.preventDefault();
-                        // scrollToSection(sectionId);
                         scrollToSectionDeluxe();
                       }}
                       className=" "
@@ -172,7 +159,6 @@ const PropertiesDetails = () => {
                     <BtnBlack
                       onClick={(e) => {
                         e.preventDefault();
-                        // scrollToSection(sectionId);
                         scrollToSectionPremier();
                       }}
                       className=" "
@@ -182,7 +168,6 @@ const PropertiesDetails = () => {
                     <BtnBlack
                       onClick={(e) => {
                         e.preventDefault();
-                        // scrollToSection(sectionId);
                         scrollToSectionLuxury();
                       }}
                       className=" "
@@ -191,21 +176,6 @@ const PropertiesDetails = () => {
                     </BtnBlack>
                   </div>
                   <div className=" ">
-                    {/* {hotel?.description.map((desc, index) => (
-                        <div key={`${hotel.hotel_name + index}`}>
-                          <p
-                            className="text-primaryText text-[15px] leading-[22px] tracking-[-0.38px] h-[180px] overflow-y-scroll"
-                            style={{
-                              WebkitLineClamp: 8,
-                              display: "-webkit-box",
-                              WebkitBoxOrient: "vertical",
-                            }}
-                          >
-                            {desc}
-                          </p>
-                          <br />
-                        </div>
-                      ))} */}
                     <p
                       className="text-primaryText text-[15px]  h-[180px] overflow-y-scroll"
                       style={{
@@ -223,7 +193,6 @@ const PropertiesDetails = () => {
             </div>
 
             <div className="w-full  ">
-              {/* features div  */}
               <div className="py-6 shadow-2xl bg-secondryBackground border border-borderCol rounded-xl">
                 <div className="flex justify-between">
                   <RoomType />

@@ -61,7 +61,6 @@ const Gallery = () => {
             poetry comes to life.
           </p>
           <BtnPurple
-            onClick={() => alert("Contact Us button clicked!")}
             className="mt-4"
           >
             Explore More{" "}

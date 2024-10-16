@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import BtnPurple from "../Buttons/BtnPurple";
+import toast from "react-hot-toast";
 
 export default function App() {
   const {
@@ -11,7 +12,7 @@ export default function App() {
 
   const onSubmit = (data) => {
     console.log(data);
-    alert("Form submitted successfully!");
+    toast.success("Form submitted successfully!");
   };
 
   return (
@@ -38,7 +39,6 @@ export default function App() {
           )}
         </div>
 
-        {/* Email Field */}
         <div>
           <label className="block text-sm font-medium text-primaryText">
             Email
@@ -59,7 +59,6 @@ export default function App() {
           )}
         </div>
 
-        {/* Phone Number Field */}
         <div>
           <label className="block text-sm font-medium text-primaryText">
             Phone No.
@@ -80,7 +79,6 @@ export default function App() {
           )}
         </div>
 
-        {/* Preferred Location Dropdown */}
         <div>
           <label className="block text-sm font-medium text-primaryText">
             Preferred Location
@@ -99,7 +97,6 @@ export default function App() {
           )}
         </div>
 
-        {/* Hotel Type Dropdown */}
         <div>
           <label className="block text-sm font-medium text-primaryText">
             Hotel Type
@@ -118,7 +115,6 @@ export default function App() {
           )}
         </div>
 
-        {/* Room Type Dropdown */}
         <div>
           <label className="block text-sm font-medium text-primaryText">
             Room Type
@@ -137,7 +133,6 @@ export default function App() {
           )}
         </div>
 
-        {/* Budget Dropdown */}
         <div>
           <label className="block text-sm font-medium text-primaryText">
             Budget
@@ -156,7 +151,6 @@ export default function App() {
           )}
         </div>
 
-        {/* Message Field */}
         <div>
           <label className="block text-sm font-medium text-primaryText">
             Message
@@ -170,7 +164,6 @@ export default function App() {
           )}
         </div>
 
-        {/* Submit Button */}
         <BtnPurple type="submit" className="px-8">
           Login
         </BtnPurple>

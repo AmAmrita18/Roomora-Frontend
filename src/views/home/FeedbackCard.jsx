@@ -6,7 +6,6 @@ import "swiper/css/pagination";
 import { FreeMode, Pagination, Keyboard } from "swiper/modules";
 import { FaStar } from "react-icons/fa";
 import feedbackProfile1 from "../../assets/images/Home/Profile.png";
-// Sample feedback data
 const feedbackData = [
   {
     name: "Sophia Joy",
@@ -15,7 +14,7 @@ const feedbackData = [
     heading: "Exceptional Service!",
     feedbackText:
       "Lorem ipsum dolor sit amet elit. Soluta officia totam corporis ipsum labore.",
-    profilePic: feedbackProfile1, // Replace with actual image paths
+    profilePic: feedbackProfile1, 
   },
   {
     name: "John Doe",
@@ -64,7 +63,7 @@ const FeedbackCarousel = () => {
       <div className="w-[90%] max-w-[1200px] mx-auto">
         <div className="relative">
           <Swiper
-            ref={swiperRef} // Attach the ref to Swiper
+            ref={swiperRef}
             slidesPerView={3}
             spaceBetween={30}
             freeMode={true}

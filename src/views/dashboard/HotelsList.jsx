@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import hotelIcon from "../../assets/images/common/hotel_icon.png";
 import EditHotelModal from "./EditHotelModal"; 
 import { AuthContext } from "../../context/AuthContext";
+import toast from "react-hot-toast";
 
 const HotelsList = ({ hotelsData, handleGetHotels }) => {
   const {admin, deleteHotel} = useContext(AuthContext)

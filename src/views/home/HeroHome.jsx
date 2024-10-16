@@ -1,7 +1,6 @@
 import React from 'react'
 import BtnBlack from '../../components/Buttons/BtnBlack.jsx';
 import BtnPurple from '../../components/Buttons/BtnPurple.jsx';
-// import heroHomeImg from '../../assets/images/Home/heroHomeBuiding.png'
 import heroHomeImg from '/image2.png'
 
 const HeroHome = () => {
@@ -28,8 +27,8 @@ const HeroHome = () => {
                     <p className='custom-para pt-6 pb-10'>Your journey to the perfect room begins here. Explore our listings to find the stay that matches your dreams where every room radiates a positive aura..</p>
                     <div className='flex flex-row'>
                         <div className='flex gap-x-4'>
-                            <BtnBlack onClick={() => alert(`${item.heading} button clicked!`)}>Book Now</BtnBlack>
-                            <BtnPurple onClick={() => alert(`${item.heading} button clicked!`)}>Browse Properties</BtnPurple>
+                            <BtnBlack>Book Now</BtnBlack>
+                            <BtnPurple>Browse Properties</BtnPurple>
                         </div>
                     </div>
                     <div className="flex flex-row gap-4">

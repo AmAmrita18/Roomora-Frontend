@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import toast from "react-hot-toast";
 import Loader from "../../components/Loader/Loader";
 import { Link } from "react-router-dom";
 import BtnBlack from "../../components/Buttons/BtnPurple.jsx";
@@ -43,8 +44,8 @@ const PropertiesCard = ({ isHome = false }) => {
       setLoading(true);
       const response = await getHotels();
       setHotels(response);
-      setFilteredHotels(response); // Set filteredHotels to the full list initially
-      setRecords(response.slice(firstIndex, lastIndex)); // Set initial records
+      setFilteredHotels(response); 
+      setRecords(response.slice(firstIndex, lastIndex)); 
     } catch (error) {
       console.error("Error fetching hotels:", error);
     } finally {
@@ -60,17 +61,16 @@ const PropertiesCard = ({ isHome = false }) => {
         hotel.location.city.toLowerCase().includes(term) ||
         hotel.hotel_type.toLowerCase().includes(term)
     );
-    setFilteredHotels(filtered); // Update filtered hotels
-    setRecords(filtered.slice(firstIndex, lastIndex)); // Update records based on the filtered list
+    setFilteredHotels(filtered); 
+    setRecords(filtered.slice(firstIndex, lastIndex)); 
   };
 
-  // Update records when filteredHotels or currentPage changes
   useEffect(() => {
     setRecords(filteredHotels.slice(firstIndex, lastIndex));
   }, [filteredHotels, currentPage]);
 
   useEffect(() => {
-    handleGetHotels(); // Fetch hotels on component mount
+    handleGetHotels(); 
   }, []);
 
   if (loading) {
@@ -84,7 +84,6 @@ const PropertiesCard = ({ isHome = false }) => {
   return (
     <>
       <SearchBar onSearch={handleSearch} />
-      <DropdownBar />
       <div className="w-full flex flex-col pt-10">
         <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-x-6 gap-y-6">
           {records.map((hotel, idx) =>

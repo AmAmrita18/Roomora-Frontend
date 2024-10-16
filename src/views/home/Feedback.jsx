@@ -16,7 +16,7 @@ const Feedback = () => {
                 <h1 className='custom-heading'>What Our Clients Say</h1>
                 <div className='flex flex-row justify-between items-center'>
                     <p className='custom-para w-[80%] pt-6'>Read the success stories and heartfelt testimonials from our valued clients. Discover why they chose Estatein for their real estate needs.</p>
-                    <BtnBlack onClick={() => alert(`${item.heading} button clicked!`)}>View all Hotels</BtnBlack>
+                    <BtnBlack>View all Hotels</BtnBlack>
                 </div>
             </div>
             <FeedbackCard/>

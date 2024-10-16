@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useForm, useFieldArray, FormProvider } from "react-hook-form";
 import { AuthContext } from "../../context/AuthContext";
+import toast from "react-hot-toast";
 import CloudinaryPhotoUpload from "../../components/CloudinaryPhotoUpload";
 import constants from "../../utils/constants";
 import BtnPurple from "../../components/Buttons/BtnPurple";
 import Modal from "./Modal";
+import { IoIosRemoveCircle } from "react-icons/io";
 
 const EditHotel = ({ isOpen, onClose, hotelData, handleGetHotels }) => {
   const { admin, updateHotel } = useContext(AuthContext);
@@ -60,18 +62,29 @@ const EditHotel = ({ isOpen, onClose, hotelData, handleGetHotels }) => {
     formState: { errors },
   } = methods;
 
-  const { fields: facilityFields, append: appendFacility } = useFieldArray({
+  const {
+    fields: facilityFields,
+    append: appendFacility,
+    remove: removeFacility,
+  } = useFieldArray({
     control,
     name: "facilities",
   });
 
-  const { fields: roomFacilityFields, append: appendRoomFacility } =
-    useFieldArray({
-      control,
-      name: "room_facilities",
-    });
+  const {
+    fields: roomFacilityFields,
+    append: appendRoomFacility,
+    remove: removeRoomFacility,
+  } = useFieldArray({
+    control,
+    name: "room_facilities",
+  });
 
-  const { fields: roomFields, append: appendRoom } = useFieldArray({
+  const {
+    fields: roomFields,
+    append: appendRoom,
+    remove: removeRoom,
+  } = useFieldArray({
     control,
     name: "rooms",
   });
@@ -79,15 +92,17 @@ const EditHotel = ({ isOpen, onClose, hotelData, handleGetHotels }) => {
   const [step, setStep] = useState(1);
 
   const onSubmit = async (data) => {
-    console.log({photos: data.photos})
-    data.photos = data.photos.map((photo) => typeof photo === "string" ? photo : photo.url);
-      console.log({photos: data.photos})
+    console.log({ photos: data.photos });
+    data.photos = data.photos.map((photo) =>
+      typeof photo === "string" ? photo : photo.url
+    );
+    console.log({ photos: data.photos });
     const formData = { admin_id: admin._id, ...data };
-    console.log({hotelData: formData})
-    const res = await updateHotel({hotelData: formData});
-    if(res){
-      console.log(res)
-      alert('Hotel updated successfully')
+    console.log({ hotelData: formData });
+    const res = await updateHotel({ hotelData: formData });
+    if (res) {
+      console.log(res);
+      toast.success("Hotel updated successfully");
       onClose();
       handleGetHotels();
     }
@@ -97,8 +112,8 @@ const EditHotel = ({ isOpen, onClose, hotelData, handleGetHotels }) => {
   const handlePrev = () => setStep(step - 1);
 
   useEffect(() => {
-    console.log({hotelPhotos: hotelData.photos})
-  }, [])
+    console.log({ hotelPhotos: hotelData.photos });
+  }, []);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -199,16 +214,22 @@ const EditHotel = ({ isOpen, onClose, hotelData, handleGetHotels }) => {
                         placeholder="Facility"
                         className="mt-1 block w-full p-2 bg-backgroundDark text-white border border-borderCol rounded-md"
                       />
+                      <button
+                        type="button"
+                        className="text-red-500 mt-2 relative"
+                        onClick={() => removeFacility(index)}
+                      >
+                        <IoIosRemoveCircle className="absolute bottom-12  " />
+                      </button>
                     </div>
                   ))}
                 </div>
-
                 {/* Photos */}
-        <CloudinaryPhotoUpload
-          register={register}
-          setValue={setValue}
-          watch={watch}
-        />
+                <CloudinaryPhotoUpload
+                  register={register}
+                  setValue={setValue}
+                  watch={watch}
+                />
               </div>
             )}
 
@@ -217,10 +238,21 @@ const EditHotel = ({ isOpen, onClose, hotelData, handleGetHotels }) => {
                 <h2 className="text-2xl font-bold mb-4">Edit Room Details</h2>
                 <h3 className="text-lg font-semibold mb-2 mt-6">Rooms</h3>
                 {roomFields.map((room, index) => (
+                  
                   <div
                     key={room.id}
-                    className="mb-4 border bg-primaryBackground  border-borderCol p-4 rounded-md"
+                    className="relative mb-4 border bg-primaryBackground  border-borderCol p-4 rounded-md"
                   >
+                     {/* Remove Room Button */}
+                     <button
+                      type="button"
+                      className="text-red-500 mt-4 absolute right-2 -top-2"
+                      onClick={() => removeRoom(index )}
+                    >
+                      <h1 className="px-3 py-1  bg-red-500 rounded-full text-primaryText">
+                        X
+                      </h1>
+                    </button>
                     <h4 className="text-md font-semibold mb-2">
                       Room {index + 1}
                     </h4>
@@ -240,6 +272,7 @@ const EditHotel = ({ isOpen, onClose, hotelData, handleGetHotels }) => {
                       </select>
                       <input
                         type="number"
+                        onWheel={(e) => e.target.blur()}
                         {...register(`rooms.${index}.total_rooms`, {
                           required: true,
                           min: 1,
@@ -249,6 +282,7 @@ const EditHotel = ({ isOpen, onClose, hotelData, handleGetHotels }) => {
                       />
                       <input
                         type="number"
+                        onWheel={(e) => e.target.blur()}
                         {...register(`rooms.${index}.available_rooms`, {
                           required: true,
                           min: 0,
@@ -258,6 +292,7 @@ const EditHotel = ({ isOpen, onClose, hotelData, handleGetHotels }) => {
                       />
                       <input
                         type="number"
+                        onWheel={(e) => e.target.blur()}
                         {...register(`rooms.${index}.price`, {
                           required: true,
                           min: 0,
@@ -268,8 +303,8 @@ const EditHotel = ({ isOpen, onClose, hotelData, handleGetHotels }) => {
                     </div>
                     <BtnPurple
                       type="button"
-                      onClick={() => appendRoomFacility({})} // Append a new facility for this room
-                      className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mb-3"
+                      onClick={() => appendRoomFacility({})}
+                      className=" text-white px-4 py-2 rounded mb-3"
                     >
                       Add Facility
                     </BtnPurple>
@@ -288,9 +323,17 @@ const EditHotel = ({ isOpen, onClose, hotelData, handleGetHotels }) => {
                             placeholder="Facility"
                             className="mt-1 block w-full p-2 bg-backgroundDark text-white border border-borderCol rounded-md"
                           />
+                          <button
+                            type="button"
+                            className="text-red-500 mt-2 relative"
+                            onClick={() => removeRoomFacility(idx)}
+                          >
+                            <IoIosRemoveCircle className="absolute bottom-12  " />
+                          </button>
                         </div>
                       ))}
                     </div>
+                   
                   </div>
                 ))}
                 <BtnPurple
@@ -380,7 +423,9 @@ const EditHotel = ({ isOpen, onClose, hotelData, handleGetHotels }) => {
                 Next
               </BtnPurple>
             ) : (
-              <BtnPurple type="button" onClick={handleSubmit(onSubmit)}>Save</BtnPurple>
+              <BtnPurple type="button" onClick={handleSubmit(onSubmit)}>
+                Save
+              </BtnPurple>
             )}
           </div>
         </form>

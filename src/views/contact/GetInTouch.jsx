@@ -24,18 +24,13 @@ const GetInTouch = () => {
       heading: "Facebook - LinkedIn - Twitter",
       arrow: arrow,
     },
-    // {
-    //     logoServices: Icon4,
-    //     heading: "Instagram LinkedIn Facebook",
-    //     arrow: arrow
-    // }
+    
   ];
   return (
     <div className="w-full ">
       <div className="w-[90%] max-w-[1200px] mx-auto py-28 ">
         <div className="pb-14">
           <img src={stars} alt="" />
-          {/* <h1 className="custom-heading">Have Queries or Need Help? </h1> */}
 
           <h1 className="custom-heading ">How Can We Assist You? Contact Us!</h1>
           <p className="custom-para pt-6 pb-10 w-[80%]">
@@ -45,11 +40,11 @@ const GetInTouch = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-3 justify-between gap-4 border-8 border-secondryBackground p-3 rounded-xl">
+        <div className="grid grid-cols-3 justify-between gap-4 border-8  border-secondryBackground p-3 rounded-xl">
           {ServicesHome.map((item, index) => (
             <div
               key={index}
-              className="bg-secondryBackground py-4 px-4 rounded-xl border border-[#262626] items-center justify-center flex flex-col"
+              className="gradientBackground py-4 px-4 rounded-xl border border-[#262626] items-center justify-center flex flex-col"
             >
               <img src={item?.logoServices} alt="" />
               <h1 className="font-[500] text-PrimaryText text-[18px] leading-[27px] text-primaryText pt-4">

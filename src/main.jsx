@@ -17,9 +17,9 @@ import Layout from "./Layout.jsx";
 import Hotels from "./views/dashboard/Hotels.jsx";
 import Users from "./views/dashboard/Users.jsx";
 import Bookings from "./views/dashboard/Bookings.jsx";
-import Test from "./views/Test.jsx";
 import AdminLoginPage from "./views/AdminLoginPage.jsx";
 import LoginPage from "./components/LoginPage.jsx";
+import { Toaster } from "react-hot-toast";
 
 createRoot(document.getElementById("root")).render(
   <AuthProvider>
@@ -37,7 +37,6 @@ createRoot(document.getElementById("root")).render(
             path="profile"
             element={<ProtectedRoute element={<UserProfile />} />}
           />
-          <Route path="test" element={<Test />} />
         </Route>
         <Route path="/adminLogin" element={<AdminLoginPage />} />
         <Route
@@ -52,5 +51,6 @@ createRoot(document.getElementById("root")).render(
         </Route>
       </Routes>
     </Router>
+    <Toaster />
   </AuthProvider>
 );

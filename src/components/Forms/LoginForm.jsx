@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import BtnPurple from "../Buttons/BtnPurple";
 import { AuthContext } from "../../context/AuthContext";
+import toast from "react-hot-toast";
 
 export default function LoginForm({ closeModal }) {
   const { login, signup } = useContext(AuthContext);
@@ -11,7 +12,7 @@ export default function LoginForm({ closeModal }) {
     register,
     handleSubmit,
     formState: { errors },
-    watch, // to watch password for confirming password
+    watch, 
   } = useForm();
 
   const onSubmit = async (data) => {
@@ -21,23 +22,23 @@ export default function LoginForm({ closeModal }) {
       try {
         const res = await login({ email, password })
         if (res) {
-          alert(`User Login Successful`);
+          toast.success(`User Login Successful`);
           closeModal();
         }
       } catch (err) {
-        alert("Login Failed!");
+        toast.error("Login Failed!");
       }
     } else {
       try {
         const res = await signup({ email, password, name });
         if (!res) {
-          alert("Signup Failed!");
+          toast.error("Signup Failed!");
         } else {
-          alert("Signup Successful");
+          toast.success("Signup Successful");
           closeModal();
         }
       } catch (err) {
-        alert("Signup Failed!");
+        toast.error("Signup Failed!");
       }
     }
     // reset();

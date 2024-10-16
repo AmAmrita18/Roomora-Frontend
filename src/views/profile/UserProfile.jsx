@@ -7,7 +7,7 @@ import BookingsHistory from "./BookingsHistory.jsx";
 import Loader from "../../components/Loader/Loader.jsx";
 
 const UserProfile = () => {
-  const { user, setUser, logout, updateProfile, updatePassword, dataLoading } =
+  const { user, setUser, logout, updateProfile, updateUserPassword, dataLoading } =
     useContext(AuthContext);
   const [isEditing, setIsEditing] = useState(false);
   const [isEditingPassword, setIsEditingPassword] = useState(false);
@@ -15,11 +15,10 @@ const UserProfile = () => {
   // const [previewPhoto, setPreviewPhoto] = useState(user?.profile_photo || null);
   const [password, setPassword] = useState("");
   const [updated, setUpdated] = useState(false);
-  const [viewProfile, setViewProfile] = useState(true); // State to toggle between profile
+  const [viewProfile, setViewProfile] = useState(true); 
 
   const [userDetails, setUserDetails] = useState(user);
 
-  // Address fields in the form
   const [address, setAddress] = useState({
     city: user?.address?.city || "",
     state: user?.address?.state || "",
@@ -62,7 +61,7 @@ const UserProfile = () => {
   // };
 
   const handleUpdatePassword = async () => {
-    await updatePassword({ email: user.email, password });
+    const res = await updateUserPassword({ user_id: user._id, password });
     setIsEditingPassword(false);
   };
 
@@ -292,7 +291,7 @@ const UserProfile = () => {
                 </button>
                 {isEditingPassword && (
                   <button
-                    onClick={handleUpdatePassword}
+                    onClick={() => handleUpdatePassword()}
                     className="bg-teal-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition duration-200"
                   >
                     Save

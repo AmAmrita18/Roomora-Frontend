@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import BtnPurple from "../components/Buttons/BtnPurple";
 import { AuthContext } from "../context/AuthContext";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const AdminLoginPage = () => {
@@ -19,13 +20,13 @@ const AdminLoginPage = () => {
       try {
         const res = await loginAdmin({ email, password });
         if (!res) {
-          alert("Login Failed!");
+          toast.error("Login Failed!");
         } else {
-          alert("Login Successful");
+          toast.success("Login Successful");
           navigate("/dashboard");
         }
       } catch (err) {
-        alert("Login Failed!");
+        toast.error("Login Failed!");
       }
     }
 

@@ -1,7 +1,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import BtnPurple from "../../components/Buttons/BtnPurple"; // Assuming you have this button component
+import BtnPurple from "../../components/Buttons/BtnPurple"; 
 import profile from "../../assets/images/Home/Profile.png";
+import toast from "react-hot-toast";
 
 const ContactUsForm = () => {
   const {
@@ -12,7 +13,7 @@ const ContactUsForm = () => {
 
   const onSubmit = (data) => {
     console.log(data);
-    alert("Form Submitted!");
+    toast.success("Form Submitted!");
   };
 
   return (
@@ -41,12 +42,10 @@ const ContactUsForm = () => {
           </div>
         </div>
 
-        {/* Form with react-hook-form */}
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col items-end gap-y-4 mx-6"
         >
-          {/* Name Field */}
           <div className="text-primaryText py-3 w-full bg-backgroundDark border border-borderCol rounded-xl">
             <input
               type="text"
@@ -61,7 +60,6 @@ const ContactUsForm = () => {
             )}
           </div>
 
-          {/* Email Field */}
           <div className="text-primaryText py-3 w-full bg-backgroundDark border border-borderCol rounded-xl">
             <input
               type="email"
@@ -82,7 +80,6 @@ const ContactUsForm = () => {
             )}
           </div>
 
-          {/* Message Field */}
           <div className="text-primaryText py-3 w-full bg-backgroundDark border border-borderCol rounded-xl">
             <input
               type="text"
@@ -99,7 +96,6 @@ const ContactUsForm = () => {
             )}
           </div>
 
-          {/* Textarea Field */}
           <div className="text-primaryText py-3 w-full bg-backgroundDark border border-borderCol rounded-xl">
             <textarea
               id="textarea"
@@ -117,7 +113,6 @@ const ContactUsForm = () => {
             )}
           </div>
 
-          {/* Submit Button */}
           <BtnPurple type="submit">Send Request</BtnPurple>
         </form>
       </div>

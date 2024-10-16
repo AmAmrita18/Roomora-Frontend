@@ -12,7 +12,7 @@ const FAQ = () => {
           <h1 className='custom-heading'>Frequently Asked Questions</h1>
           <div className='flex flex-row justify-between items-center'>
             <p className='custom-para w-[80%] pt-6'>Find answers to common questions about Estatein's services, property listings, and the real estate process. We're here to provide clarity and assist you every step of the way.</p>
-            <BtnBlack onClick={() => alert(`${item.heading} button clicked!`)}>View All FAQ’s</BtnBlack>
+            <BtnBlack>View All FAQ’s</BtnBlack>
           </div>
         </div>
         <FAQCard/>

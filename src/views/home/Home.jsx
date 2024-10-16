@@ -1,7 +1,7 @@
 import React from 'react'
 import HeroHome from './HeroHome'
 import HomeServices from './HomeServices'
-import Feedback from './Feedback'
+// import Feedback from './Feedback'
 import FAQ from './FAQ'
 import Cta from './Cta'
 import Gallery from './Gallery'
@@ -13,12 +13,11 @@ import PropertiesSection from "../properties/PropertiesSection.jsx";
 const Home = () => {
   return (
     <div>
-        {/* <HeroAbout/> */}
         <PropertiesSection isHome={true}/>
         <HomeProperties />
         <HomeServices/>
         <Gallery/>
-        <Feedback/>
+        {/* <Feedback/> */}
         <FAQ/>
         <Cta/>
     </div>

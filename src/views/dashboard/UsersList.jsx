@@ -5,6 +5,7 @@ import { FcCancel } from "react-icons/fc";
 import { FaCheckCircle } from "react-icons/fa";
 import hotelIcon from "../../assets/images/common/hotel_icon.png"
 import { AuthContext } from "../../context/AuthContext";
+import toast from "react-hot-toast";
 
 
 const UsersList = ({usersData, handleGetUsers}) => {
@@ -26,9 +27,9 @@ const UsersList = ({usersData, handleGetUsers}) => {
 	const handleStatusChange = async (userId, status) => {
 		const res = await updateUserStatus({userId, status})
 		if(!res) {
-			alert('Please try again!')
+			toast.error('Please try again!')
 		} else {
-			alert('User Status Updated Successfully')
+			toast.success('User Status Updated Successfully')
 			handleGetUsers()
 		}
 	}

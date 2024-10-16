@@ -5,6 +5,7 @@ import Icon3 from "../../assets/images/About/iconAbout3.png";
 import Icon4 from "../../assets/images/About/iconAbout2.png";
 import stars from "../../assets/images/common/stars.png";
 import BtnPurple from "../../components/Buttons/BtnPurple";
+import toast from "react-hot-toast";
 
 const Values = () => {
   const ServicesHome = [
@@ -47,7 +48,7 @@ const Values = () => {
             platform that transcended the ordinary.
           </p>
           <BtnPurple
-                  onClick={() => alert(`${item.heading} button clicked!`)}
+                  onClick={() => toast(`${item.heading} website under maintanance!`)}
                 >
                   Visit Website{" "}
                 </BtnPurple>

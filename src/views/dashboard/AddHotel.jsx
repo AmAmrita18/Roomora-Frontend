@@ -1,9 +1,11 @@
 import React, { useContext, useState } from "react";
 import { useForm, useFieldArray, FormProvider } from "react-hook-form";
 import { AuthContext } from "../../context/AuthContext";
+import toast from "react-hot-toast";
 import CloudinaryPhotoUpload from "../../components/CloudinaryPhotoUpload";
 import constants from "../../utils/constants";
 import BtnPurple from "../../components/Buttons/BtnPurple";
+import { IoIosRemoveCircle } from "react-icons/io";
 
 const AddHotel = () => {
   const { admin, addHotel } = useContext(AuthContext);
@@ -59,15 +61,23 @@ const AddHotel = () => {
     formState: { errors },
   } = methods;
 
-  const { fields: facilityFields, append: appendFacility } = useFieldArray({
+  const {
+    fields: facilityFields,
+    append: appendFacility,
+    remove: removeFacility,
+  } = useFieldArray({
     control,
     name: "facilities",
   });
-  const { fields: roomFacilityFields, append: appendRoomFacility } =
-    useFieldArray({
-      control,
-      name: "room_facilities",
-    });
+
+  const {
+    fields: roomFacilityFields,
+    append: appendRoomFacility,
+    remove: removeRoomFacility,
+  } = useFieldArray({
+    control,
+    name: "room_facilities",
+  });
 
   const {
     fields: photoFields,
@@ -80,29 +90,44 @@ const AddHotel = () => {
 
   const [photoPreviews, setPhotoPreviews] = useState([]);
 
-  const { fields: roomFields, append: appendRoom } = useFieldArray({
+  const {
+    fields: roomFields,
+    append: appendRoom,
+    remove: removeRoom,
+  } = useFieldArray({
     control,
     name: "rooms",
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     data.photos = data.photos.map((photo) => photo.url);
     const formData = { email: admin.email, ...data };
     console.log({ formData });
-    addHotel(formData);
+    try {
+      const res = await addHotel(formData);
+      if (!res) {
+        toast.error("please try again!");
+      } else {
+        toast.success("hotel added successfully!");
+        reset();
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("please try again!");
+    }
   };
 
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
 
     if (photoPreviews.length + files.length > 10) {
-      alert("You can only upload a maximum of 10 photos.");
+      toast.error("You can only upload a maximum of 10 photos.");
       return;
     }
 
     const newPhotoPreviews = files.map((file) => URL.createObjectURL(file));
     setValue("photos", [...photoPreviews, ...files]);
-    setPhotoPreviews((prev) => [...prev, ...newPhotoPreviews]); // Combine previews
+    setPhotoPreviews((prev) => [...prev, ...newPhotoPreviews]);
   };
 
   return (
@@ -112,6 +137,7 @@ const AddHotel = () => {
         className="w-full p-6 gradientBackground border border-borderCol shadow-lg  text-white rounded-md max-w-4xl mx-auto my-10 overflow-y-auto"
       >
         <h2 className="text-2xl font-bold mb-4">Add New Hotel</h2>
+
         {/* Hotel Name */}
         <div className="mb-4">
           <label className="block text-sm font-medium">Hotel Name</label>
@@ -124,6 +150,7 @@ const AddHotel = () => {
             <span className="text-red-500 text-sm">Hotel name is required</span>
           )}
         </div>
+
         {/* Location Fields */}
         <h3 className="text-lg font-semibold mb-2">Location</h3>
         <div className="grid grid-cols-2 gap-4 mb-4">
@@ -179,7 +206,7 @@ const AddHotel = () => {
           className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 mb-3 rounded"
         >
           Add Facility
-        </BtnPurple>{" "}
+        </BtnPurple>
         <div className="grid grid-cols-4 gap-x-3">
           {facilityFields.map((field, index) => (
             <div key={field.id} className="mb-2">
@@ -189,10 +216,16 @@ const AddHotel = () => {
                 placeholder="Facility"
                 className="mt-1 block w-full p-2 bg-backgroundDark text-white border border-borderCol rounded-md"
               />
+              <button
+                type="button"
+                className="text-red-500 mt-2 relative"
+                onClick={() => removeFacility(index)}
+              >
+                <IoIosRemoveCircle className="absolute bottom-12  " />
+              </button>
             </div>
           ))}
         </div>
-
         {/* Photos */}
         <CloudinaryPhotoUpload
           register={register}
@@ -204,8 +237,15 @@ const AddHotel = () => {
         {roomFields.map((room, index) => (
           <div
             key={room.id}
-            className="mb-4 border bg-primaryBackground  border-borderCol p-4 rounded-md"
+            className="mb-4 border relative bg-primaryBackground  border-borderCol p-4 rounded-md"
           >
+            <button
+              type="button"
+              className="text-primaryText mt-4 absolute right-2 -top-2 bg-red-600 px-3 py-1 rounded-full"
+              onClick={() => removeRoom(index)}
+            >
+              X
+            </button>
             <h4 className="text-md font-semibold mb-2">Room {index + 1}</h4>
             <div className="grid grid-cols-2 gap-4 mb-4">
               <select
@@ -221,6 +261,7 @@ const AddHotel = () => {
               </select>
               <input
                 type="number"
+                onWheel={(e) => e.target.blur()}
                 {...register(`rooms.${index}.total_rooms`, {
                   required: true,
                   min: 1,
@@ -230,6 +271,7 @@ const AddHotel = () => {
               />
               <input
                 type="number"
+                onWheel={(e) => e.target.blur()}
                 {...register(`rooms.${index}.available_rooms`, {
                   required: true,
                   min: 0,
@@ -239,6 +281,7 @@ const AddHotel = () => {
               />
               <input
                 type="number"
+                onWheel={(e) => e.target.blur()}
                 {...register(`rooms.${index}.price`, {
                   required: true,
                   min: 0,
@@ -247,17 +290,17 @@ const AddHotel = () => {
                 className="mt-1 block w-full p-2 placeholder:text-primaryText bg-backgroundDark text-white border border-borderCol rounded-md"
               />
             </div>
+
             <BtnPurple
               type="button"
-              onClick={() => appendRoomFacility({})} // Append a new facility for this room
+              onClick={() => appendRoomFacility({})}
               className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mb-3"
             >
-              Add Facility
+              Add Room Facility
             </BtnPurple>
-
             <div className="grid grid-cols-4 gap-x-3">
               {roomFacilityFields.map((field, idx) => (
-                <div key={field?.id} className="mb-2">
+                <div key={field.id} className="mb-2">
                   <input
                     type="text"
                     {...register(`rooms[${index}].room_facilities[${idx}]`, {
@@ -266,27 +309,37 @@ const AddHotel = () => {
                     placeholder="Facility"
                     className="mt-1 block w-full p-2 bg-backgroundDark text-white border border-borderCol rounded-md"
                   />
+                  <button
+                    type="button"
+                    className="text-red-500 mt-2 relative"
+                    onClick={() => removeRoomFacility(idx)}
+                  >
+                    <IoIosRemoveCircle className="absolute bottom-12  " />
+                  </button>
                 </div>
               ))}
             </div>
           </div>
         ))}
-        <BtnPurple
-          type="button"
-          onClick={() =>
-            appendRoom({
-              roomType: "",
-              total_rooms: "",
-              available_rooms: "",
-              price: "",
-              discount: "",
-            })
-          }
-          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-        >
-          Add Room
-        </BtnPurple>
-        
+
+        <div className="flex justify-end gap-3">
+          <BtnPurple
+            type="button"
+            onClick={() =>
+              appendRoom({
+                roomType: "",
+                total_rooms: "",
+                available_rooms: "",
+                price: "",
+                room_facilities: [],
+              })
+            }
+            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+          >
+            Add Room
+          </BtnPurple>
+        </div>
+
         {/* Owner Details */}
         <h3 className="text-lg font-semibold mb-2 mt-6">Owner Details</h3>
         <div className="grid grid-cols-2 gap-4 mb-4">

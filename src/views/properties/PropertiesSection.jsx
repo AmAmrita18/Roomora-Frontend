@@ -11,13 +11,7 @@ const PropertiesSection = () => {
     <div className="w-full bg-gradient-to-r from-backgroundDark from-30% via-backgroundDark via-70% to-[#2A213F] to-90% ...">
       <div className="w-[90%] max-w-[1200px] mx-auto pt-10 pb-10">
       <div className=" flex justify-center items-center flex-col"
-      // style={{
-      //   backgroundImage: `url('${bgImage}')`,
-      //   backgroundRepeat: "no-repeat",
-      //   backgroundSize: "cover",
-      //   objectFit: "cover",
-      //   backgroundPosition:"center"
-      // }}
+     
       >
           <div>
           <img src={stars} alt="" />

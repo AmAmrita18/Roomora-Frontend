@@ -6,30 +6,33 @@ import "swiper/css/pagination";
 import { FreeMode, Pagination, Keyboard } from "swiper/modules";
 import BtnBlack from "../../components/Buttons/BtnBlack.jsx";
 
-// Sample feedback data
 const feedbackData = [
   {
-    feedbackQues: "How do I search for properties on Estatein?",
+    feedbackQues: "How can I book a hotel room on Roomora?",
     feedbackAns:
-      "Lorem ipsum dolor sit amet elit. Soluta officia totam corporis ipsum labore.",
+      "Simply search for hotels using our filters, select your preferred room, and complete the booking through our secure payment process.",
   },
   {
-    feedbackQues: "How do I search for properties on Estatein?",
-    feedbackAns: "Amazing service! Will definitely recommend to others.",
-  },
-  {
-    feedbackQues: "How do I search for properties on Estatein?",
+    feedbackQues: "What is the cancellation policy for bookings on Roomora?",
     feedbackAns:
-      "The experience was good, but there were some issues with the booking.",
+      "Yes, cancellation is available. The cancellation policies vary by hotel. You can view the specific policy for each booking before confirming your reservation. ",
   },
   {
-    feedbackQues: "How do I search for properties on Estatein?!",
-    feedbackAns: "Exceptional experience! I loved every moment of my stay.",
+    feedbackQues: "Are there any additional charges during my stay?",
+    feedbackAns:
+      "Additional charges may apply for services like room service, spa treatments, or late check-outs. These can be reviewed during the booking process.",
+  },
+ 
+  {
+    feedbackQues: "How do I contact Roomora customer support?",
+    feedbackAns:
+      "You can reach our 24/7 customer support team through the 'Contact Us' section on the website or via the support hotline provided in your booking confirmation.",
   },
 ];
 
+
 const FAQCard = () => {
-  const swiperRef = useRef(null); // Create a ref for Swiper instance
+  const swiperRef = useRef(null);
 
   const handleNext = () => {
     if (swiperRef.current) {
@@ -66,9 +69,7 @@ const FAQCard = () => {
                     <h5 className="cards-heading">{feedback.feedbackQues}</h5>
                     <p className="custom-para py-6">{feedback.feedbackAns}</p>
                     <BtnBlack
-                      className="mb-3 w-[45%] "
-                      onClick={() => alert(`${item.heading} button clicked!`)}
-                    >
+                      className="mb-3 w-[45%] ">
                       Read More
                     </BtnBlack>
                   </div>

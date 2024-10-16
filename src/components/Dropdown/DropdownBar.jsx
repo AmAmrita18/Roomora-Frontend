@@ -1,38 +1,39 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import DropdownList from "./DropdownList";
-import { FaLocationDot } from "react-icons/fa6";
 import { FaHotel } from "react-icons/fa";
 import { MdBedroomChild } from "react-icons/md";
 import { RiPriceTag2Fill } from "react-icons/ri";
 import constants from "../../utils/constants";
+import { AuthContext } from "../../context/AuthContext";
+import toast from "react-hot-toast";
 
-const DropdownBar = () => {
-  const [selectedFilters, setSelectedFilters] = useState({});
+const DropdownBar = ({ handleGetHotels }) => {
+  const {selectedFilters, setSelectedFilters} = useContext(AuthContext)
 
-  const handleFilterChange = (index, option) => {
-    const updatedFilters = { ...selectedFilters, [index]: option };
+  const handleFilterChange = (filterKey, selectedValue) => {
+    const updatedFilters = { ...selectedFilters, [filterKey]: selectedValue };
+    const {hotel_type, room_type } = updatedFilters
+    console.log({updatedFilters})
     setSelectedFilters(updatedFilters);
-    console.log("Selected Filters:", updatedFilters);
-    // Apply further logic based on selected filters here
+    
+    handleGetHotels();
   };
 
   const dropdownsData = [
     {
-      icon: <FaLocationDot />,
-      label: "Location",
-      options: constants.locations || [],
-    },
-    {
+      key: "hotel_type",
       icon: <FaHotel />,
       label: "Hotel Type",
       options: constants.hotel_types,
     },
     {
+      key: "roomType",
       icon: <MdBedroomChild />,
       label: "Room Type",
       options: constants.room_types,
     },
     {
+      key: "priceRange",
       icon: <RiPriceTag2Fill />,
       label: "Pricing Range",
       options: [
@@ -46,7 +47,7 @@ const DropdownBar = () => {
 
   return (
     <div className="gradientBackground border border-borderCol p-2 rounded-xl flex items-center justify-center">
-      <DropdownList dropdowns={dropdownsData} onSelectFilter={handleFilterChange} />
+      <DropdownList dropdowns={dropdownsData} onFilterChange={handleFilterChange} />
     </div>
   );
 };

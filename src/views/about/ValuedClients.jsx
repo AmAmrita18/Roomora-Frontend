@@ -1,9 +1,9 @@
 import React from "react";
 import stars from "../../assets/images/common/stars.png";
-import BtnBlack from "../../components/Buttons/BtnBlack.jsx";
 import { RxDashboard } from "react-icons/rx";
 import { MdOutlineMenuBook } from "react-icons/md";
 import BtnPurple from "../../components/Buttons/BtnPurple.jsx";
+import toast from "react-hot-toast";
 
 const ValuedClients = () => {
   const clientsInfo = [
@@ -16,13 +16,14 @@ const ValuedClients = () => {
         "Estatein's expertise in finding the perfect office space for our expanding operations was invaluable. They truly understand our business needs.",
     },
     {
-      time: "Since 2019",
-      title: "Trackier",
-      domain: "Commercial Real Estate",
-      category: "Luxury Home Development",
+      time: "Since 2021",
+      title: "Skylark Properties",
+      domain: "Residential Real Estate",
+      category: "Urban Apartment Complexes",
       description:
-        "Estatein's expertise in finding the perfect office space for our expanding operations was invaluable. They truly understand our business needs.",
-    },
+        "Skylark's innovative approach to modern urban living helped us find the ideal apartment complex that perfectly fits the needs of our growing community.",
+    }
+    
   ];
 
   return (
@@ -49,7 +50,7 @@ const ValuedClients = () => {
                   </h1>
                 </div>
                 <BtnPurple
-                  onClick={() => alert(`${item.heading} button clicked!`)}
+                  onClick={() => toast(`${item.heading} Website is under maintainance!`)}
                 >
                   Visit Website{" "}
                 </BtnPurple>

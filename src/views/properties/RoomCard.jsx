@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { FaCircleCheck } from "react-icons/fa6";
 import BtnPurple from "../../components/Buttons/BtnPurple";
 import { AuthContext } from "../../context/AuthContext";
+import toast from "react-hot-toast";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import BookingSuccess from "./BookingSuccess";
 
@@ -24,7 +25,6 @@ const RoomCard = ({
   const [bookingDetails, setBookingDetails] = useState();
   const navigate = useNavigate()
   const location = useLocation()
-  // Total price calculation based on selected days and number of rooms
   const totalPrice = selectedDays * pricePerDay * numOfRooms;
 
   const handleBooking = async () => {
@@ -48,7 +48,7 @@ const RoomCard = ({
         setBookingSuccess(true);
       }
     } catch (err) {
-      alert("Booking Failed, please try again!");
+      toast.error("Booking Failed, please try again!");
     }
   };
 

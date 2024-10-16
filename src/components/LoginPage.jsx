@@ -2,13 +2,14 @@ import React, { useState, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import BtnPurple from "../components/Buttons/BtnPurple";
 import { AuthContext } from "../context/AuthContext";
-import { useLocation, useNavigate } from "react-router-dom"; // Import useLocation
+import toast from "react-hot-toast";
+import { useLocation, useNavigate } from "react-router-dom"; 
 import { path } from "framer-motion/m";
 
 const LoginPage = () => {
     const {user, admin, login, signup} = useContext(AuthContext)
   const navigate = useNavigate();
-  const location = useLocation(); // Get the location state
+  const location = useLocation(); 
   const [isLogin, setIsLogin] = useState(true);
 
   const {
@@ -24,24 +25,24 @@ const LoginPage = () => {
       try {
         const res = await login({ email, password });
         if (res) {
-          alert(`User Login Successful`);
+          toast.success(`User Login Successful`);
           console.log({location: location.state?.from?.pathname})
           navigate(location.state?.from?.pathname || "/");
         }
       } catch (err) {
-        alert("Login Failed!");
+        toast.error("Login Failed!");
       }
     } else {
       try {
         const res = await signup({ email, password, name });
         if (!res) {
-          alert("Signup Failed!");
+          toast.error("Signup Failed!");
         } else {
-          alert("Signup Successful");
+          toast.success("Signup Successful");
           navigate(location.state?.from?.pathname || "/");
         }
       } catch (err) {
-        alert("Signup Failed!");
+        toast.error("Signup Failed!");
       }
     }
   };
@@ -52,7 +53,6 @@ const LoginPage = () => {
 
     useEffect(() => {
         console.log({location: location.state?.from?.pathname})
-        // console.log({location, pathname: location.pathname})
         if(admin) {
             navigate("/dashboard");
         }

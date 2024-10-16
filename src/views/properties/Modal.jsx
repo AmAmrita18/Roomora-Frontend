@@ -1,21 +1,9 @@
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaTimes, FaPrint } from "react-icons/fa";
-import Confetti from "react-confetti";
-// import { useWindowSize } from "react-use";
 
 const Modal = ({ isOpen, onClose, bookingDetails }) => {
-//   const { width, height } = useWindowSize();
 
-//   useEffect(() => {
-//     const handleEsc = (event) => {
-//       if (event.key === "Escape") {
-//         onClose();
-//       }
-//     };
-//     window.addEventListener("keydown", handleEsc);
-//     return () => window.removeEventListener("keydown", handleEsc);
-//   }, [onClose]);
 
   if (!isOpen) return null;
 
@@ -29,7 +17,6 @@ const Modal = ({ isOpen, onClose, bookingDetails }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      {/* Confetti Animation */}
       <Confetti width={width} height={height} numberOfPieces={300} />
       <div className="bg-white p-8 rounded-lg shadow-lg w-1/2 relative">
         <button

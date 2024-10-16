@@ -5,45 +5,46 @@ const Experience = () => {
   const RoomoraExperience = [
     {
       serialNo: "Step 01",
-      title: "Discover a World of Possibilities",
+      title: "Discover the Perfect Hotel",
       description:
-        "Your journey begins with exploring our carefully curated property listings. Use our intuitive search tools to filter properties based on your preferences, including location, type, size, and budget.",
+        "Your journey begins with exploring our carefully curated hotel listings. Use our intuitive search tools to filter hotels based on your preferences, including location, type, amenities, and price range.",
     },
     {
       serialNo: "Step 02",
-      title: "Discover a World of Possibilities",
+      title: "Comprehensive Hotel Insights",
       description:
-        "Your journey begins with exploring our carefully curated property listings. Use our intuitive search tools to filter properties based on your preferences, including location, type, size, and budget.",
+        "Gain in-depth insights into each hotel. Explore room types, guest reviews, hotel facilities, and nearby attractions to make an informed choice for your stay.",
     },
     {
       serialNo: "Step 03",
-      title: "Discover a World of Possibilities",
+      title: "Select the Ideal Room",
       description:
-        "Your journey begins with exploring our carefully curated property listings. Use our intuitive search tools to filter properties based on your preferences, including location, type, size, and budget.",
+        "Browse through various room options at each hotel. Use filters like room size, bed type, and availability to select the perfect room for your comfort and budget.",
     },
     {
       serialNo: "Step 04",
-      title: "Discover a World of Possibilities",
+      title: "Easily Customize Your Stay",
       description:
-        "Your journey begins with exploring our carefully curated property listings. Use our intuitive search tools to filter properties based on your preferences, including location, type, size, and budget.",
+        "Personalize your stay with options like special requests, additional services, or dining preferences. Make your experience unique and tailored to your needs.",
     },
     {
       serialNo: "Step 05",
-      title: "Discover a World of Possibilities",
+      title: "Confirm Your Booking",
       description:
-        "Your journey begins with exploring our carefully curated property listings. Use our intuitive search tools to filter properties based on your preferences, including location, type, size, and budget.",
+        "Finalize your reservation through our secure payment gateway. Enjoy a smooth booking experience, ensuring peace of mind and a hassle-free confirmation process.",
     },
     {
       serialNo: "Step 06",
-      title: "Discover a World of Possibilities",
+      title: "Experience a Memorable Stay",
       description:
-        "Your journey begins with exploring our carefully curated property listings. Use our intuitive search tools to filter properties based on your preferences, including location, type, size, and budget.",
+        "Your stay begins with a seamless check-in process. Enjoy exceptional service, comfort, and luxury throughout your time at the hotel, making your stay truly unforgettable.",
     },
   ];
+  
 
   return (
     <div className="w-full">
-      <div className="w-[90%] max-w-[1200px] mx-auto pt-36">
+      <div className="w-[90%] max-w-[1200px] mx-auto">
         <div className="">
           <img src={stars} alt="" />
           <h1 className=" custom-heading">Navigating the Roomora Experience</h1>
@@ -74,4 +75,3 @@ const Experience = () => {
 export default Experience;
 
 
-// border-4 border-transparent bg-clip-border bg-gradient-to-r from-purple-400 via-pink-500 to-red-500

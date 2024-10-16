@@ -1,15 +1,17 @@
 import { motion } from "framer-motion";
 import { AuthContext } from "../../context/AuthContext";
+import toast from "react-hot-toast";
 import { useContext, useState,useEffect } from "react";
 import Avatar from "react-avatar";
 import constants from "../../utils/constants.js";
 import BtnBlack from "../../components/Buttons/BtnBlack.jsx";
 
 const AdminProfilePage = () => {
-  const { admin, setAdmin, logout, updateProfile } = useContext(AuthContext);
+  const { admin, setAdmin, logout, updateProfile, updateAdminPassword } = useContext(AuthContext);
   const [isEditing, setIsEditing] = useState(false);
   const [updated, setUpdated] = useState(false)
   const [isEditingPassword, setIsEditingPassword] = useState(false);
+  const [password, setPassword] = useState("")
   // const [newProfilePhoto, setNewProfilePhoto] = useState(null);
   // const [previewPhoto, setPreviewPhoto] = useState(
   //   admin?.profile_photo || null
@@ -69,6 +71,12 @@ const AdminProfilePage = () => {
     }));
     setUpdated(true);
     
+  };
+
+  const handleUpdatePassword = async () => {
+    console.log({admin_id: admin._id})
+    await updateAdminPassword({ admin_id: admin._id, password });
+    setIsEditingPassword(false);
   };
 
   useEffect(() => {
@@ -218,6 +226,8 @@ const AdminProfilePage = () => {
           {isEditingPassword ? (
             <input
               type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter new password"
               className="w-full bg-primaryBackground text-white p-2 rounded-md border border-borderCol"
             />
@@ -234,11 +244,11 @@ const AdminProfilePage = () => {
           </button>
           {isEditingPassword && (
             <button
-              onClick={() => setIsEditingPassword(!isEditingPassword)}
-              className="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded transition duration-200"
-            >
-              Save
-            </button>
+            onClick={() => handleUpdatePassword()}
+            className="bg-teal-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition duration-200"
+          >
+            Save
+          </button>
           )}
         </div>
       </div>

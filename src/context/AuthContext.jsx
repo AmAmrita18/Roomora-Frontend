@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import Cookies from "js-cookie";
+import toast from "react-hot-toast";
 
 const AuthContext = createContext();
 
@@ -53,7 +54,7 @@ const AuthProvider = ({ children }) => {
         checkAuthFromCookies()
         return data.user;
       } else {
-        alert(data.error.message)
+        toast.error(data.error.message)
         throw new Error(data.message);
       }
     } catch (error) {
@@ -72,14 +73,13 @@ const AuthProvider = ({ children }) => {
       });
   
       if (!response.ok) {
-        throw new Error("Failed to login"); // Handle non-2xx status codes
+        throw new Error("Failed to login"); 
       }
   
-      const data = await response.json(); // Await the JSON parsing
+      const data = await response.json(); 
   
-      // Check if data contains access_token and admin
+      
       if (data.access_token && data.admin) {
-        // Set cookies and update context state
         Cookies.set("authToken", data.access_token, { expires: 7 });
         Cookies.set("admin", JSON.stringify(data.admin), { expires: 7 });
         setAdmin({ admin: data.admin });
@@ -87,13 +87,13 @@ const AuthProvider = ({ children }) => {
         console.log({ data });
 
         checkAuthFromCookies();
-        return data.admin; // Return data for any additional handling
+        return data.admin;
       } else {
-        throw new Error("Invalid response data"); // Handle unexpected response
+        throw new Error("Invalid response data"); 
       }
     } catch (error) {
       console.error("Login failed:", error);
-      alert("Login failed"); // Show alert if login fails
+      toast.error("Login failed"); 
     }
   };
   
@@ -167,34 +167,52 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const updatePassword = async ({ email, updatedPassword }) => {
+  const updateUserPassword = async ({ user_id, password }) => {
     try {
-      const response = await fetch(
-        `${baseUrl}/${
-          admin ? "admin/update-password" : "user/update-password"
-        }`,
+      const response = await fetch(`${baseUrl}/user/update-password`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            "authorization": `Bearer ${authToken}`
           },
-          body: JSON.stringify({ email, updatedPassword }),
+          body: JSON.stringify({ user_id, password }),
         }
       );
 
       const data = await response.json();
       if (response.ok) {
-        if (admin) {
-          Cookies.set("admin", JSON.stringify(data.admin), { expires: 7 });
-          setAdmin({ admin: data.admin });
-        } else {
-          Cookies.set("user", JSON.stringify(data.user), { expires: 7 });
-          setUser({ user: data.user });
-        }
-        alert("Password Updated Successfully!");
-        return data;
+        toast.success("Password Updated Successfully!");
+        return data.user;
       } else {
-        throw new Error(data.message);
+        toast.success("Password update failed! Please try again!")
+        throw new Error(data?.error?.message);
+      }
+    } catch (error) {
+      console.error("Update failed:", error);
+    }
+  };
+
+  const updateAdminPassword = async ({ admin_id, password }) => {
+    try {
+      const response = await fetch(`${baseUrl}/admin/update-password`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "authorization": `Bearer ${authToken}`
+          },
+          body: JSON.stringify({ admin_id, password }),
+        }
+      );
+
+      const data = await response.json();
+      if (response.ok) {
+        toast.success("Password Updated Successfully!");
+        return data.admin;
+      } else {
+        toast.success("Password update failed! Please try again!")
+        throw new Error(data.error?.message || "Something went wrong!");
       }
     } catch (error) {
       console.error("Update failed:", error);
@@ -328,7 +346,7 @@ const AuthProvider = ({ children }) => {
         console.log({booking: data.booking})
         return data.booking;
       } else {
-        alert(data.error.message)
+        toast.error(data.error.message)
         throw new Error(data.message);
       }
     } catch (error) {
@@ -388,7 +406,7 @@ const AuthProvider = ({ children }) => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          authorization: `Bearer ${authToken}`,
+          "authorization": `Bearer ${authToken}`,
         },
         body: JSON.stringify({userId, status}),
       });
@@ -404,6 +422,51 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  const updateBookingStatus = async ({booking_id, status}) => {
+    try {
+      const response = await fetch(`${baseUrl}/admin/update-booking-status`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "authorization": `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({booking_id, status}),
+      });
+      const data = await response.json();
+      console.log({data})
+      if(response.ok) {
+        return data.booking
+      } else {
+        throw new Error(data.message)
+      }
+    } catch (error) {
+      console.error("Error updating hotel:", error);
+    }
+  };
+
+  const updateUserBookingStatus = async ({booking_id, status}) => {
+    try {
+      const response = await fetch(`${baseUrl}/admin/update-booking-status`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "authorization": `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({booking_id, status}),
+      });
+      const data = await response.json();
+      console.log({data})
+      if(response.ok) {
+        return data.booking
+      } else {
+        throw new Error(data.message)
+      }
+    } catch (error) {
+      console.error("Error updating hotel:", error);
+    }
+  };
+
+
   const deleteHotel = async ({email, hotel_id}) => {
     try {
       console.log({email, hotel_id})
@@ -417,10 +480,10 @@ const AuthProvider = ({ children }) => {
       });
       const data = await response.json();
       if(response.ok) {
-        alert(data.message)
+        toast.erorr(data.message)
         return true
       } else {
-        alert(data.error.message)
+        toast.error(data.error.message)
         throw new Error(data.error.message)
       }
     } catch (error) {
@@ -440,7 +503,8 @@ const AuthProvider = ({ children }) => {
         logout,
         loginAdmin,
         updateProfile,
-        updatePassword,
+        updateUserPassword,
+        updateAdminPassword,
         addHotel,
         getHotels,
         getHotel,
@@ -449,6 +513,8 @@ const AuthProvider = ({ children }) => {
         bookHotel,
         updateHotel,
         updateUserStatus,
+        updateBookingStatus,
+        updateUserBookingStatus,
         getUserBookings,
         deleteHotel,
         dataLoading

@@ -1,4 +1,3 @@
-// src/components/Button.jsx
 import React from 'react';
 
 const BtnBlack = ({ onClick, children, className = '', type = 'button' }) => {

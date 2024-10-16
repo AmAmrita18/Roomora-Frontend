@@ -1,6 +1,5 @@
 import React from 'react'
-import BtnBlack from '../../components/Buttons/BtnBlack.jsx';
-import BtnPurple from '../../components/Buttons/BtnPurple.jsx';
+
 import heroAboutImg from '../../assets/images/Home/heroHomeBuiding.png'
 
 const HeroAbout = () => {

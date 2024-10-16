@@ -1,12 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import toast from "react-hot-toast";
 import Loader from "../../components/Loader/Loader";
 import { motion } from "framer-motion";
 import { Edit, Search, Trash2, Printer } from "lucide-react";
 import hotelIcon from "../../assets/images/common/hotel_icon.png";
 import InvoicePage from "../dashboard/InvoicePage";
+import { FcCancel } from "react-icons/fc";
+
 const BookingsHistory = () => {
-  const { getUserBookings, user } = useContext(AuthContext);
+  const { getUserBookings, user, updateUserBookingStatus } = useContext(AuthContext);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -38,6 +41,17 @@ const BookingsHistory = () => {
       setLoading(false);
     }
   };
+
+  const handleStatusChange = async (booking_id, status) => {
+		const res = await updateUserBookingStatus({booking_id, status})
+    console.log({res})
+		if(!res) {
+			toast.error('Please try again!')
+		} else {
+			toast.success('Booking Cancelled Successfully')
+			handleGetUserBookings()
+		}
+	}
 
   useEffect(() => {
     handleGetUserBookings();
@@ -93,6 +107,9 @@ const BookingsHistory = () => {
                   Check out
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                   Total Price
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
@@ -103,7 +120,8 @@ const BookingsHistory = () => {
 
             <tbody className="divide-y divide-gray-700">
               {filteredBookings &&
-                filteredBookings.map((booking) => (
+                filteredBookings.map((booking) => 
+                  booking.hotel && (
                   <motion.tr
                     key={booking?.hotel_id}
                     initial={{ opacity: 0 }}
@@ -130,10 +148,14 @@ const BookingsHistory = () => {
                       {new Date(booking.check_out).getDate() + "-" + new Date(booking?.check_out).getMonth() + "-" + new Date(booking.check_out).getFullYear()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                      Rs. {booking?.totalPrice}
+                      {booking?.booking_status}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                      <InvoicePage bookingDetails={booking} />
+                      Rs. {booking?.totalPrice}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 flex justify-start gap-x-2 items-center cursor-pointer">
+                        <InvoicePage bookingDetails={booking} />
+                        {booking.booking_status !== 'cancelled' && <FcCancel onClick={() => handleStatusChange(booking._id, 'cancelled')} className="text-2xl"/>}
                     </td>
                   </motion.tr>
                 ))}

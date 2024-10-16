@@ -116,7 +116,7 @@ const InvoicePage = ({ bookingDetails }) => {
             "Loading..."
           ) : (
             <button className="text-red-400 hover:text-red-300">
-              <Printer size={18} />
+              <Printer className="cursor-pointer" size={18} />
             </button>
           )
         }

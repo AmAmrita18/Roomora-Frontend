@@ -1,12 +1,17 @@
 import { motion } from "framer-motion";
 import { Edit, Search, Trash2, Printer } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import hotelIcon from "../../assets/images/common/hotel_icon.png";
 import InvoicePage from "./InvoicePage";
+import { FcCancel } from "react-icons/fc";
+import { AuthContext } from "../../context/AuthContext";
+import toast from "react-hot-toast";
 
-const BookingsList = ({ bookingsData }) => {
+const BookingsList = ({ bookingsData, handleGetBookings }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredBookings, setFilteredBookings] = useState(bookingsData);
+
+  const {updateBookingStatus} = useContext(AuthContext)
 
   const handleSearch = (e) => {
     const term = e.target.value.toLowerCase();
@@ -18,6 +23,17 @@ const BookingsList = ({ bookingsData }) => {
     );
     setFilteredBookings(filtered);
   };
+
+  const handleStatusChange = async (booking_id, status) => {
+		const res = await updateBookingStatus({booking_id, status})
+    console.log({res})
+		if(!res) {
+			toast.error('Please try again!')
+		} else {
+			toast.success('Booking Cancelled Successfully')
+			handleGetBookings()
+		}
+	}
 
   useEffect(() => {
     setFilteredBookings(bookingsData);
@@ -71,7 +87,10 @@ const BookingsList = ({ bookingsData }) => {
                 Check out
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                Download Invoice
+                Status
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                Actions
               </th>
             </tr>
           </thead>
@@ -122,7 +141,11 @@ const BookingsList = ({ bookingsData }) => {
                           new Date(booking.check_out).getFullYear()}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                        {booking.booking_status || "-"}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 flex justify-start gap-x-2 items-center">
                           <InvoicePage bookingDetails={booking} />
+                          {booking.booking_status !== 'cancelled' && <FcCancel onClick={() => handleStatusChange(booking._id, 'cancelled')} className="text-2xl cursor-pointer"/>}
                       </td>
                     </motion.tr>
                   )
