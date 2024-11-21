@@ -1,17 +1,19 @@
 import { motion } from "framer-motion";
 import { AuthContext } from "../../context/AuthContext";
 import toast from "react-hot-toast";
-import { useContext, useState,useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import Avatar from "react-avatar";
 import constants from "../../utils/constants.js";
 import BtnBlack from "../../components/Buttons/BtnBlack.jsx";
 
 const AdminProfilePage = () => {
-  const { admin, setAdmin, logout, updateProfile, updateAdminPassword } = useContext(AuthContext);
+  const { admin, setAdmin, logout, updateProfile, updateAdminPassword } =
+    useContext(AuthContext);
   const [isEditing, setIsEditing] = useState(false);
-  const [updated, setUpdated] = useState(false)
+  const [updated, setUpdated] = useState(false);
   const [isEditingPassword, setIsEditingPassword] = useState(false);
-  const [password, setPassword] = useState("")
+  const [password, setPassword] = useState("");
+
   // const [newProfilePhoto, setNewProfilePhoto] = useState(null);
   // const [previewPhoto, setPreviewPhoto] = useState(
   //   admin?.profile_photo || null
@@ -70,11 +72,10 @@ const AdminProfilePage = () => {
       address: address,
     }));
     setUpdated(true);
-    
   };
 
   const handleUpdatePassword = async () => {
-    console.log({admin_id: admin._id})
+    console.log({ admin_id: admin._id });
     await updateAdminPassword({ admin_id: admin._id, password });
     setIsEditingPassword(false);
   };
@@ -83,12 +84,12 @@ const AdminProfilePage = () => {
     (async () => {
       if (updated) {
         const updatedProfile = await updateProfile(adminDetails);
-        console.log({updatedProfile})
-        setAdmin(updatedProfile)
-        handleEditToggle()
+        console.log({ updatedProfile });
+        setAdmin(updatedProfile);
+        handleEditToggle();
         setUpdated(false);
       }
-    })()
+    })();
   }, [adminDetails, updated]);
 
   return (
@@ -107,20 +108,14 @@ const AdminProfilePage = () => {
               className="rounded-full w-24 h-24 object-cover mr-4"
             />
           ) : ( */}
-            <Avatar
-              name={admin.name}
-              round={true}
-              size="60"
-            />
+          <Avatar name={admin.name} round={true} size="60" />
           {/* )} */}
 
           <div>
             <h3 className="text-2xl font-semibold text-gray-100">
               {adminDetails.name}
             </h3>
-            <p className="text-gray-400">
-              {adminDetails.email}
-            </p>
+            <p className="text-gray-400">{adminDetails.email}</p>
           </div>
         </div>
         <button
@@ -244,11 +239,11 @@ const AdminProfilePage = () => {
           </button>
           {isEditingPassword && (
             <button
-            onClick={() => handleUpdatePassword()}
-            className="bg-teal-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition duration-200"
-          >
-            Save
-          </button>
+              onClick={() => handleUpdatePassword()}
+              className="bg-teal-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition duration-200"
+            >
+              Save
+            </button>
           )}
         </div>
       </div>
@@ -262,6 +257,6 @@ const AdminProfilePage = () => {
       </div>
     </motion.div>
   );
-}
+};
 
 export default AdminProfilePage;

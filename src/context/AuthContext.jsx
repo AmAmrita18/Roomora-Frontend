@@ -6,63 +6,63 @@ const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [authToken, setAuthToken] = useState(null);
-  const [adminAuthToken, setAdminAuthToken] = useState(null);
+  // const [adminAuthToken, setAdminAuthToken] = useState(null);
 
   const [user, setUser] = useState(null);
   const [admin, setAdmin] = useState(null);
-  const [dataLoading, setDataLoading] = useState(true)
+  const [dataLoading, setDataLoading] = useState(true);
   const baseUrl = `http://localhost:1111`;
 
   useEffect(() => {
     checkAuthFromCookies();
   }, []);
 
-  // const checkAuthFromCookies = () => {
-  //   const token = Cookies.get("authToken");
-  //   const loggedInUser = Cookies.get("user");
-  //   const loggedInAdmin = Cookies.get("admin");
-  
-  //   if (token && (loggedInUser || loggedInAdmin)) {
-  //     try {
-  //       const userObject = loggedInUser && JSON.parse(loggedInUser);
-  //       const adminObject = loggedInAdmin && JSON.parse(loggedInAdmin);
-  //       setAuthToken(token);
-  //       setUser(userObject);
-  //       setAdmin(adminObject);
-  //     } catch (error) {
-  //       console.error("Error parsing user data from cookies:", error);
-  //     }
-  //   }
-  //   setDataLoading(false);
-  // };  
-
   const checkAuthFromCookies = () => {
     const token = Cookies.get("authToken");
-    const adminToken = Cookies.get("adminAuthToken");
     const loggedInUser = Cookies.get("user");
     const loggedInAdmin = Cookies.get("admin");
-  
-    if (token && loggedInUser) {
+
+    if (token && (loggedInUser || loggedInAdmin)) {
       try {
         const userObject = loggedInUser && JSON.parse(loggedInUser);
+        const adminObject = loggedInAdmin && JSON.parse(loggedInAdmin);
         setAuthToken(token);
         setUser(userObject);
-      } catch (error) {
-        console.error("Error parsing user data from cookies:", error);
-      }
-    }
-    if (adminToken && loggedInAdmin) {
-      try {
-        const adminObject = loggedInAdmin && JSON.parse(loggedInAdmin);
-        setAdminAuthToken(adminToken);
         setAdmin(adminObject);
       } catch (error) {
         console.error("Error parsing user data from cookies:", error);
       }
     }
     setDataLoading(false);
-  };  
-  
+  };
+
+  // const checkAuthFromCookies = () => {
+  //   const token = Cookies.get("authToken");
+  //   const adminToken = Cookies.get("adminAuthToken");
+  //   const loggedInUser = Cookies.get("user");
+  //   const loggedInAdmin = Cookies.get("admin");
+
+  //   if (token && loggedInUser) {
+  //     try {
+  //       const userObject = loggedInUser && JSON.parse(loggedInUser);
+  //       setAuthToken(token);
+  //       setUser(userObject);
+  //     } catch (error) {
+  //       console.error("Error parsing user data from cookies:", error);
+  //     }
+  //   }
+  //   if (adminToken && loggedInAdmin) {
+  //     try {
+  //       const adminObject = loggedInAdmin && JSON.parse(loggedInAdmin);
+  //       setAdminAuthToken(adminToken);
+  //       setAdmin(adminObject);
+  //     } catch (error) {
+  //       console.error("Error parsing user data from cookies:", error);
+  //     }
+  //   }
+  //   setDataLoading(false);
+  // };
+
   const login = async (credentials) => {
     try {
       const response = await fetch(`${baseUrl}/auth/login`, {
@@ -79,15 +79,48 @@ const AuthProvider = ({ children }) => {
         Cookies.set("user", JSON.stringify(data.user), { expires: 7 });
         setUser({ user: data.user });
         setAuthToken(data.access_token);
-
-        checkAuthFromCookies()
+        checkAuthFromCookies();
         return data.user;
       } else {
-        toast.error(data.error.message)
+        toast.error(data.error.message);
         throw new Error(data.message);
       }
     } catch (error) {
       console.error("Login failed:", error);
+    }
+  };
+
+  const loginAdmin = async (credentials) => {
+    try {
+      const response = await fetch(`${baseUrl}/auth/login-admin`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to login");
+      }
+
+      const data = await response.json();
+
+      if (data.access_token && data.admin) {
+        Cookies.set("authToken", data.access_token, { expires: 7 });
+        Cookies.set("admin", JSON.stringify(data.admin), { expires: 7 });
+        setAdmin({ admin: data.admin });
+        setAuthToken(data.access_token);
+        console.log({ data });
+
+        checkAuthFromCookies();
+        return data.admin;
+      } else {
+        throw new Error("Invalid response data");
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+      toast.error("Login failed");
     }
   };
 
@@ -100,66 +133,31 @@ const AuthProvider = ({ children }) => {
   //       },
   //       body: JSON.stringify(credentials),
   //     });
-  
+
   //     if (!response.ok) {
-  //       throw new Error("Failed to login"); 
+  //       throw new Error("Failed to login");
   //     }
-  
-  //     const data = await response.json(); 
-  
-      
+
+  //     const data = await response.json();
+
   //     if (data.access_token && data.admin) {
-  //       Cookies.set("authToken", data.access_token, { expires: 7 });
+  //       Cookies.set("adminAuthToken", data.access_token, { expires: 7 });
   //       Cookies.set("admin", JSON.stringify(data.admin), { expires: 7 });
   //       setAdmin({ admin: data.admin });
-  //       setAuthToken(data.access_token);
+  //       setAdminAuthToken(data.access_token);
   //       console.log({ data });
 
   //       checkAuthFromCookies();
   //       return data.admin;
   //     } else {
-  //       throw new Error("Invalid response data"); 
+  //       throw new Error("Invalid response data");
   //     }
   //   } catch (error) {
   //     console.error("Login failed:", error);
-  //     toast.error("Login failed"); 
+  //     toast.error("Login failed");
   //   }
   // };
   
-  const loginAdmin = async (credentials) => {
-    try {
-      const response = await fetch(`${baseUrl}/auth/login-admin`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credentials),
-      });
-  
-      if (!response.ok) {
-        throw new Error("Failed to login"); 
-      }
-  
-      const data = await response.json(); 
-  
-      
-      if (data.access_token && data.admin) {
-        Cookies.set("adminAuthToken", data.access_token, { expires: 7 });
-        Cookies.set("admin", JSON.stringify(data.admin), { expires: 7 });
-        setAdmin({ admin: data.admin });
-        setAdminAuthToken(data.access_token);
-        console.log({ data });
-  
-        checkAuthFromCookies();
-        return data.admin;
-      } else {
-        throw new Error("Invalid response data"); 
-      }
-    } catch (error) {
-      console.error("Login failed:", error);
-      toast.error("Login failed"); 
-    }
-  };
   const signup = async (userData) => {
     try {
       const response = await fetch(`${baseUrl}/auth/register`, {
@@ -177,7 +175,7 @@ const AuthProvider = ({ children }) => {
         setUser({ user: data.user });
         setAuthToken(data.access_token);
 
-        checkAuthFromCookies()
+        checkAuthFromCookies();
         return data.user;
       } else {
         throw new Error(data.message);
@@ -197,13 +195,14 @@ const AuthProvider = ({ children }) => {
 
   const updateProfile = async (updatedProfile) => {
     try {
-      console.log({updatedProfile})
+      console.log({ updatedProfile });
       const response = await fetch(
         `${baseUrl}/${admin ? "admin/update-admin" : "user/update"}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            authorization: `Bearer ${authToken}`,
           },
           body: JSON.stringify(updatedProfile),
         }
@@ -217,7 +216,7 @@ const AuthProvider = ({ children }) => {
           return data.admin;
         } else {
           Cookies.set("user", JSON.stringify(data.user), { expires: 7 });
-          console.log({user: data.user})
+          console.log({ user: data.user });
           setUser({ user: data.user });
           return data.user;
         }
@@ -231,23 +230,21 @@ const AuthProvider = ({ children }) => {
 
   const updateUserPassword = async ({ user_id, password }) => {
     try {
-      const response = await fetch(`${baseUrl}/user/update-password`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "authorization": `Bearer ${authToken}`
-          },
-          body: JSON.stringify({ user_id, password }),
-        }
-      );
+      const response = await fetch(`${baseUrl}/user/update-password`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({ user_id, password }),
+      });
 
       const data = await response.json();
       if (response.ok) {
         toast.success("Password Updated Successfully!");
         return data.user;
       } else {
-        toast.success("Password update failed! Please try again!")
+        toast.success("Password update failed! Please try again!");
         throw new Error(data?.error?.message);
       }
     } catch (error) {
@@ -257,23 +254,21 @@ const AuthProvider = ({ children }) => {
 
   const updateAdminPassword = async ({ admin_id, password }) => {
     try {
-      const response = await fetch(`${baseUrl}/admin/update-password`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "authorization": `Bearer ${authToken}`
-          },
-          body: JSON.stringify({ admin_id, password }),
-        }
-      );
+      const response = await fetch(`${baseUrl}/admin/update-password`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({ admin_id, password }),
+      });
 
       const data = await response.json();
       if (response.ok) {
         toast.success("Password Updated Successfully!");
         return data.admin;
       } else {
-        toast.success("Password update failed! Please try again!")
+        toast.success("Password update failed! Please try again!");
         throw new Error(data.error?.message || "Something went wrong!");
       }
     } catch (error) {
@@ -326,18 +321,18 @@ const AuthProvider = ({ children }) => {
 
   const getHotel = async (hotel_id) => {
     try {
-      console.log({hotel_id})
+      console.log({ hotel_id });
       const response = await fetch(`${baseUrl}/hotel/get-hotel`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           authorization: `Bearer ${authToken}`,
         },
-        body: JSON.stringify({hotel_id})
+        body: JSON.stringify({ hotel_id }),
       });
 
       const data = await response.json();
-      console.log({data})
+      console.log({ data });
       if (response.ok) {
         console.log({ hotel: data.hotel });
         return data.hotel;
@@ -382,7 +377,7 @@ const AuthProvider = ({ children }) => {
 
       const data = await response.json();
       if (response.ok) {
-        console.log({bookings: data.bookings})
+        console.log({ bookings: data.bookings });
         return data.bookings;
       } else {
         throw new Error(data.message);
@@ -400,21 +395,21 @@ const AuthProvider = ({ children }) => {
           "Content-Type": "application/json",
           authorization: `Bearer ${authToken}`,
         },
-        body: JSON.stringify(bookingDetails)
+        body: JSON.stringify(bookingDetails),
       });
 
       const data = await response.json();
       if (response.ok) {
-        console.log({booking: data.booking})
+        console.log({ booking: data.booking });
         return data.booking;
       } else {
-        toast.error(data.error.message)
+        toast.error(data.error.message);
         throw new Error(data.message);
       }
     } catch (error) {
       console.error("Update failed:", error);
     }
-  }
+  };
 
   const getUserBookings = async (user_id) => {
     try {
@@ -424,12 +419,12 @@ const AuthProvider = ({ children }) => {
           "Content-Type": "application/json",
           authorization: `Bearer ${authToken}`,
         },
-        body: JSON.stringify({user_id})
+        body: JSON.stringify({ user_id }),
       });
 
       const data = await response.json();
       if (response.ok) {
-        console.log({bookings: data.bookings})
+        console.log({ bookings: data.bookings });
         return data.bookings;
       } else {
         throw new Error(data.message);
@@ -437,11 +432,11 @@ const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error("Update failed:", error);
     }
-  }
+  };
 
-  const updateHotel = async ({hotelData}) => {
+  const updateHotel = async ({ hotelData }) => {
     try {
-      console.log({hotelData})
+      console.log({ hotelData });
       const response = await fetch(`${baseUrl}/hotel/update-hotel`, {
         method: "PUT",
         headers: {
@@ -461,97 +456,96 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const updateUserStatus = async ({userId, status}) => {
+  const updateUserStatus = async ({ userId, status }) => {
     try {
-      console.log({userId, status})
+      console.log({ userId, status });
       const response = await fetch(`${baseUrl}/admin/update-user-status`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "authorization": `Bearer ${authToken}`,
+          authorization: `Bearer ${authToken}`,
         },
-        body: JSON.stringify({userId, status}),
+        body: JSON.stringify({ userId, status }),
       });
       const data = await response.json();
-      console.log({data})
-      if(response.ok) {
-        return data.user
+      console.log({ data });
+      if (response.ok) {
+        return data.user;
       } else {
-        throw new Error(data.message)
+        throw new Error(data.message);
       }
     } catch (error) {
       console.error("Error updating hotel:", error);
     }
   };
 
-  const updateBookingStatus = async ({booking_id, status}) => {
+  const updateBookingStatus = async ({ booking_id, status }) => {
     try {
       const response = await fetch(`${baseUrl}/admin/update-booking-status`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "authorization": `Bearer ${authToken}`,
+          authorization: `Bearer ${authToken}`,
         },
-        body: JSON.stringify({booking_id, status}),
+        body: JSON.stringify({ booking_id, status }),
       });
       const data = await response.json();
-      console.log({data})
-      if(response.ok) {
-        return data.booking
+      console.log({ data });
+      if (response.ok) {
+        return data.booking;
       } else {
-        throw new Error(data.message)
+        throw new Error(data.message);
       }
     } catch (error) {
       console.error("Error updating hotel:", error);
     }
   };
 
-  const updateUserBookingStatus = async ({booking_id, status}) => {
+  const updateUserBookingStatus = async ({ booking_id, status }) => {
     try {
       const response = await fetch(`${baseUrl}/admin/update-booking-status`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "authorization": `Bearer ${authToken}`,
+          authorization: `Bearer ${authToken}`,
         },
-        body: JSON.stringify({booking_id, status}),
+        body: JSON.stringify({ booking_id, status }),
       });
       const data = await response.json();
-      console.log({data})
-      if(response.ok) {
-        return data.booking
+      console.log({ data });
+      if (response.ok) {
+        return data.booking;
       } else {
-        throw new Error(data.message)
+        throw new Error(data.message);
       }
     } catch (error) {
       console.error("Error updating hotel:", error);
     }
   };
 
-
-  const deleteHotel = async ({email, hotel_id}) => {
+  const deleteHotel = async ({ email, hotel_id }) => {
     try {
-      console.log({email, hotel_id})
+      console.log({ email, hotel_id });
       const response = await fetch(`${baseUrl}/hotel/delete-hotel`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           authorization: `Bearer ${authToken}`,
         },
-        body: JSON.stringify({email, hotel_id}),
+        body: JSON.stringify({ email, hotel_id }),
       });
       const data = await response.json();
-      if(response.ok) {
-        toast.erorr(data.message)
-        return true
+      if (response.ok) {
+        toast.erorr(data.message);
+        return true;
       } else {
-        toast.error(data.error.message)
-        throw new Error(data.error.message)
+        toast.error(data.error.message);
+        throw new Error(data.error.message);
       }
     } catch (error) {
       console.error("Error updating hotel:", error);
     }
-  }
+  };
 
   return (
     <AuthContext.Provider
@@ -579,7 +573,7 @@ const AuthProvider = ({ children }) => {
         updateUserBookingStatus,
         getUserBookings,
         deleteHotel,
-        dataLoading
+        dataLoading,
       }}
     >
       {!dataLoading && children}

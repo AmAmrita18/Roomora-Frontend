@@ -5,7 +5,6 @@ const SearchBar = ({ placeholder = "Enter a destination or property", onSearch }
   const [query, setQuery] = useState("");
 
   const handleSearch = () => {
-  
     if (onSearch) {
       onSearch(query);
     }
@@ -16,8 +15,6 @@ const SearchBar = ({ placeholder = "Enter a destination or property", onSearch }
       onSearch(query);
     }
   },[query])
-
-
 
   return (
     <div className="w-full">

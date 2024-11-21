@@ -31,8 +31,10 @@ const AdminLoginPage = () => {
     }
 
     useEffect(() => {
-        
-        if(user && admin) {
+        if(admin){
+          navigate("/dashboard")
+        }
+        if(user) {
             navigate("/")
         }
     }, [navigate, admin, user])
