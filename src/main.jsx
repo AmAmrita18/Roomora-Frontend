@@ -7,7 +7,6 @@ import Contact from "./views/contact/Contact.jsx";
 import Properties from "./views/properties/Properties.jsx";
 import PropertiesDetails from "./views/properties/PropertiesDetails.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
-import UserProfile from "./views/Profile/UserProfile.jsx";
 import ProtectedRoute from "./utils/ProtectedRoute.jsx";
 import Dashboard from "./views/dashboard/Dashboard.jsx";
 import AdminProtectedRoute from "./utils/AdminProtectedRoute.jsx";
@@ -20,6 +19,7 @@ import Bookings from "./views/dashboard/Bookings.jsx";
 import AdminLoginPage from "./views/AdminLoginPage.jsx";
 import LoginPage from "./components/LoginPage.jsx";
 import { Toaster } from "react-hot-toast";
+import { UserProfile } from "./views/index.jsx";
 
 createRoot(document.getElementById("root")).render(
   <AuthProvider>
