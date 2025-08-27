@@ -1,13 +1,10 @@
-import React from 'react'
-import HeroHome from './HeroHome'
 import HomeServices from './HomeServices'
 // import Feedback from './Feedback'
 import FAQ from './FAQ'
-import Cta from './Cta'
 import Gallery from './Gallery'
 import HomeProperties from './HomeProperties'
-import HeroAbout from '../about/heroAbout'
 import PropertiesSection from "../properties/PropertiesSection.jsx";
+import Cta from './CTA.jsx';
 
 
 const Home = () => {
@@ -19,7 +16,7 @@ const Home = () => {
         <Gallery/>
         {/* <Feedback/> */}
         <FAQ/>
-        <Cta/>
+        <Cta />
     </div>
   )
 }
