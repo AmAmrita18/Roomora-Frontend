@@ -1,7 +1,4 @@
-import React from "react";
 import Sidebar from "./Sidebar";
-import AdminProfilePage from "./AdminProfilePage";
-import { Routes, Route } from 'react-router-dom';
 import { Outlet } from "react-router-dom";
 
 const Dashboard = () => {

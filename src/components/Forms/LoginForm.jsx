@@ -30,6 +30,7 @@ export default function LoginForm({ closeModal }) {
       }
     } else {
       try {
+        console.log("Here signup")
         const res = await signup({ email, password, name });
         if (!res) {
           toast.error("Signup Failed!");
@@ -124,10 +125,15 @@ export default function LoginForm({ closeModal }) {
               </label>
               <input
                 type="password"
+                // {...register("confirmPassword", {
+                //   required: "Confirm password is required",
+                //   validate: (value) =>
+                //     value === watch("password") || "Passwords do not match",
+                // })}
                 {...register("confirmPassword", {
                   required: "Confirm password is required",
                   validate: (value) =>
-                    value === watch("password") || "Passwords do not match",
+                    value === passwordValue || "Passwords do not match",
                 })}
                 className={`inputStyle ${
                   errors.confirmPassword ? "border-red-500" : ""
