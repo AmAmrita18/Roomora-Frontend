@@ -11,7 +11,7 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [admin, setAdmin] = useState(null);
   const [dataLoading, setDataLoading] = useState(true);
-  const baseUrl = `http://localhost:1111`;
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     checkAuthFromCookies();
