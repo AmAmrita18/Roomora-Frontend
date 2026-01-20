@@ -3,12 +3,7 @@ import BtnBlack from '../../components/Buttons/BtnBlack.jsx';
 import stars from '../../assets/images/common/stars.png'
 import FeedbackCard from './FeedbackCard.jsx';
 
-
-
-
 const Feedback = () => {
-
-
     return (
         <div className='w-full'>
             <div className='w-[90%] max-w-[1200px] mx-auto pt-36'>
@@ -20,7 +15,6 @@ const Feedback = () => {
                 </div>
             </div>
             <FeedbackCard/>
-
         </div>
     )
 }
